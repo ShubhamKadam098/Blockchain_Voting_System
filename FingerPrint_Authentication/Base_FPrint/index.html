@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="./Images/Favicon_icon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js" defer></script>
+    <title>Voting Authentication</title>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div id="navbar">
+          <div id="left">
+            <img
+              src="./Images/fingerprint_5818822.png"
+              alt="icon"
+              id="webIcon"
+              srcset=""
+            />
+            <h1>Voting System</h1>
+          </div>
+          <div id="right">
+            <div class="accountLogo">
+              <img
+                src="./Images/accountLogo.svg"
+                alt="Account"
+                id="accountLogo"
+                srcset=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div id="mainBody">
+      <div class="container">
+        <div id="loginSection">
+          <form id="loginForm">
+            <h2 id="login-title">Biometric Verification</h2>
+            <div class="Input">
+              <label for="Aadhar_Number">Aadhar Number</label>
+              <input
+                type="text"
+                inputmode="numeric"
+                name="aadharNumber"
+                id="aadharNumber"
+                class="numericInput"
+                pattern="[0-9]+"
+                minlength="12"
+                maxlength="12"
+                ondrop="return false"
+                onkeypress="return event.charCode>= 48&& event.charCode<=57"
+              />
+            </div>
+            <div class="Input">
+              <label for="Biometric">Biometrics</label>
+              <img src="#" id="preImg" alt="" />
+              <input
+                accept="image/bmp, image/BMP"
+                type="file"
+                id="myFile"
+                name="fingerInput"
+              />
+            </div>
+            <button type="submit" class="btn btn-validation">Validate</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="loadingOverlay">
+      <div class="loadingSection">
+        <div class="loader">
+          <img src="./Images/Infinity-1.9s-200px.svg" alt="" />
+        </div>
+        <p class="loadingText">Authenticating the details</p>
+      </div>
+    </div>
+    <div id="errorSection">
+      <h4>Errors</h4>
+      <ul>
+        <li>fingerprint does not match</li>
+      </ul>
+    </div>
+  </body>
+</html>

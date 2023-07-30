@@ -1,0 +1,203 @@
+html,
+body,
+::before,
+::after {
+  box-sizing: border-box;
+  font-size: 1rem;
+  line-height: 1.7;
+  padding: 0;
+  margin: 0;
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+  background: linear-gradient(
+      rgba(255, 255, 255, 1) 0%,
+      rgba(251, 251, 251, 0.1) 100%
+    ),
+    linear-gradient(90deg, #84d2ff, #8d5acd);
+  overflow-x: hidden;
+}
+ul,
+ol {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: inherit;
+}
+.btn {
+  cursor: pointer;
+}
+.container {
+  width: 88%;
+  margin-inline: auto;
+}
+img {
+  height: 100%;
+}
+
+/* Navigation Bar */
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-inline: 2rem;
+  min-height: 1.8rem;
+  backdrop-filter: blur(10px);
+  /* box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+#navbar #left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-transform: uppercase;
+}
+#navbar #accountLogo {
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+  cursor: pointer;
+}
+
+#webIcon {
+  width: 4rem;
+}
+
+/* Login Form */
+#loginSection {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#loginForm {
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 55%;
+  min-height: 25rem;
+  gap: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /* box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; */
+  padding-inline: 2.5rem;
+  padding-bottom: 2rem;
+  padding-top: 1rem;
+  background-color: white;
+}
+.Input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+#aadharNumber {
+  height: 2rem;
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+  font-size: 1.125rem;
+  letter-spacing: 1em;
+}
+input[type="file"]::file-selector-button {
+  font-family: "Jetbrains Mono", Helvetica, sans-serif;
+  color: white;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  border: none;
+  padding: 0.6rem 1rem;
+  margin-right: 1rem;
+  background-color: #339dff;
+  border-radius: 10px;
+  transition: all 0.125s ease-in-out;
+}
+input[type="file"]::file-selector-button:hover {
+  background-color: #339cffe0;
+}
+#preImg {
+  align-self: center;
+  justify-self: center;
+  width: 5rem;
+}
+.btn-validation {
+  padding-block: 1rem;
+  border-radius: 50px;
+  border: none;
+  color: white;
+  background-color: #339dff;
+  font-size: 0.95rem;
+  font-weight: bold;
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: all 0.125s ease-in-out;
+}
+.btn-validation:hover {
+  background-color: #339cffde;
+}
+
+/* Loading Section */
+.loadingOverlay {
+  position: fixed;
+  scale: 0;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  height: 100vh;
+  width: 100vw;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease-in-out;
+}
+.add {
+  scale: 1;
+}
+.loadingSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 25rem;
+  width: 25rem;
+  background: #f0eded;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+#errorSection {
+  padding: 0.5rem 2rem;
+  border-radius: 1rem;
+  color: white;
+  z-index: 10;
+  font-size: 0.8rem;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  background-color: red;
+  width: fit-content;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: translateX(+110%);
+  transition: all 0.5s ease;
+}
+
+#errorSection.active {
+  transform: translateX(0);
+}
