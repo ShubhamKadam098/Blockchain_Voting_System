@@ -13,8 +13,8 @@ contract Voting {
 
     uint256 public startingTime;
     uint256 public endingTime;
-
-    constructor(string[] memory _candidateNames, uint256 _durationInMin) {
+    
+    constructor (string[] memory _candidateNames, uint256 _durationInMin) {
         for (uint256 i = 0; i < _candidateNames.length; i++) {
             candidates.push(Candidate({
                 name: _candidateNames[i],
