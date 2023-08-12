@@ -11,21 +11,21 @@ function App() {
 
   // Connect to metamask wallet
   async function connectWallet() {
-    if (window.ethereum) {
+    if (!window.ethereum) {
+      console.error("Metamask Is Not Detected");
+    } else {
       try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         setProvider(provider);
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         setAccount(address);
-        cconsole.log("Metamask Is connected to :  " + address);
+        console.log("Metamask Connected : " + address);
         setIsConnected(true);
       } catch (err) {
         console.error(err);
       }
-    } else {
-      console.error("Metamask Is Not Detected");
     }
   }
 
@@ -53,7 +53,6 @@ function App() {
 
   return (
     <>
-      <h1>Hello World !</h1>
       {isConnected ? (
         <Connected accountNumber={account} />
       ) : (
