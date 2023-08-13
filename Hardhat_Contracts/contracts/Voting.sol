@@ -22,8 +22,8 @@ contract Voting {
             }));
         }
         owner = msg.sender;
-        votingStart = block.timestamp;
-        votingEnd = block.timestamp + (_durationInMin * 1 minutes);
+        startingTime = block.timestamp;
+        endingTime = block.timestamp + (_durationInMin * 1 minutes);
     }
 
     modifier onlyOwner {
@@ -51,14 +51,14 @@ contract Voting {
     }
 
     function getVotingStatus() public view returns (bool) {
-        return (block.timestamp >= votingStart && block.timestamp < votingEnd);
+        return (block.timestamp >= startingTime && block.timestamp < endingTime);
     }
 
     function getRemainingTime() public view returns (uint256) {
-        require(block.timestamp >= votingStart, "Voting has not started yet.");
-        if (block.timestamp >= votingEnd) {
+        require(block.timestamp >= startingTime, "Voting has not started yet.");
+        if (block.timestamp >= endingTime) {
             return 0;
     }
-        return votingEnd - block.timestamp;
+        return endingTime - block.timestamp;
     }
 }
