@@ -32,19 +32,23 @@ function App() {
   // Defining actions after account is changed
   useEffect(() => {
     if (window.ethereum) {
-      window.ethereum.on("accountChanged", handleAccountChanged);
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
     }
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener("accountChanged", handleAccountChanged);
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
       }
     };
   });
 
   // Handling Account Changes
-  function handleAccountChanged(accounts) {
+  function handleAccountsChanged(accounts) {
+    console.log("Account is changed");
     if (accounts.length > 0 && account != accounts[0]) {
-      setAccount[accounts[0]];
+      setAccount(accounts[0]);
     } else {
       setIsConnected(false);
       setAccount(null);
