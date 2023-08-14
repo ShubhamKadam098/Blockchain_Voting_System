@@ -13,6 +13,7 @@ function App() {
   const [RemainingTime, setRemainingTime] = useState("");
   const [candidates, setCandidates] = useState([]);
   const [number, setNumber] = useState("");
+  const [canVote, setCanVote] = useState(true);
 
   // Connect to metamask wallet
   async function connectWallet() {
@@ -28,6 +29,7 @@ function App() {
         setAccount(address);
         console.log("Metamask Connected : " + address);
         setIsConnected(true);
+        canVote(); // Checking voters elegiblilty
       } catch (err) {
         console.error(err);
       }
@@ -58,6 +60,7 @@ function App() {
     console.log("Account is changed");
     if (accounts.length > 0 && account != accounts[0]) {
       setAccount(accounts[0]);
+      canVote(); // Check if the account is changed then the new account is eligible or not.
     } else {
       setIsConnected(false);
       setAccount(null);
@@ -73,7 +76,7 @@ function App() {
     const status = await contract.getVotingStatus();
     setVotingStatus(status);
   }
-  // Getting Remaining Time
+  // Getting Remaining Time from Contract
   async function fetchRemainingTime() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -83,7 +86,7 @@ function App() {
     setRemainingTime(parseInt(time, 16));
   }
 
-  // Fetching Candidate Information
+  // Fetching Candidate Information for Contract
   async function fetchCandidates() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -100,9 +103,32 @@ function App() {
     setCandidates(formatedList);
   }
 
-  // Handle input number change
+  // Validating if voter is eligible to vote
+  async function canVote() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    const voterStatus = await contract.voters(await signer.getAddress());
+    setCanVote(voterStatus);
+  }
+
+  // Handling input number change
   async function handleNumberChange(e) {
     setNumber(e.target.value);
+  }
+
+  // Sending voting transaction
+  async function vote() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    // Transaction
+    const tx = await contract.vote(number);
+    await tx.wait();
+    canVote();
   }
 
   return (
@@ -114,6 +140,8 @@ function App() {
           RemainingTime={RemainingTime}
           number={number}
           handleNumberChange={handleNumberChange}
+          vote={vote}
+          canVote={canVote}
         />
       ) : (
         <Login connectWallet={connectWallet} />

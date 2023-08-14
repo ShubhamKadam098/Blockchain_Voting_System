@@ -8,15 +8,21 @@ export default function Connected(props) {
         <h1>You Are Connected to Metamask</h1>
         <p>Account Number: {props.accountNumber}</p>
         <p> Remaining Time: {props.RemainingTime}</p>
-        <input
-          type="number"
-          placeholder="Entern Candidate Index"
-          value={props.number}
-          onChange={props.handleNumberChange}
-        ></input>
-        <button className="login-button" onChange={props.voteFunction}>
-          Vote
-        </button>
+        {canVote ? (
+          <p>You have Already Voted</p>
+        ) : (
+          <div className="">
+            <input
+              type="number"
+              placeholder="Entern Candidate Index"
+              value={props.number}
+              onChange={props.handleNumberChange}
+            ></input>
+            <button className="login-button" onChange={props.vote}>
+              Vote
+            </button>
+          </div>
+        )}
         <table id="myTable" className="candidates-table">
           <thead>
             <tr>
