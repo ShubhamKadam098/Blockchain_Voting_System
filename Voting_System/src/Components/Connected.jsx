@@ -8,7 +8,7 @@ export default function Connected(props) {
         <h1>You Are Connected to Metamask</h1>
         <p>Account Number: {props.accountNumber}</p>
         <p> Remaining Time: {props.RemainingTime}</p>
-        {canVote ? (
+        {props.canVote ? (
           <p>You have Already Voted</p>
         ) : (
           <div className="">
@@ -18,7 +18,7 @@ export default function Connected(props) {
               value={props.number}
               onChange={props.handleNumberChange}
             ></input>
-            <button className="login-button" onChange={props.vote}>
+            <button className="login-button" onClick={props.vote}>
               Vote
             </button>
           </div>

@@ -13,7 +13,7 @@ function App() {
   const [RemainingTime, setRemainingTime] = useState("");
   const [candidates, setCandidates] = useState([]);
   const [number, setNumber] = useState("");
-  const [canVote, setCanVote] = useState(true);
+  const [CanVote, setCanVote] = useState(true);
 
   // Connect to metamask wallet
   async function connectWallet() {
@@ -92,15 +92,15 @@ function App() {
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, contractABI, signer);
-    const candidatesList = contract.getAllVotesOfCandiates();
-    const formatedList = candidatesList.map((candidate, index) => {
+    const candidatesList = await contract.getAllVotesOfCandiates();
+    const formattedCandidates = candidatesList.map((candidates, index) => {
       return {
         index: index,
-        name: candidate.name,
-        voteCount: candidate.voteCount.toNumber(),
+        name: candidates.name,
+        voteCount: candidates.voteCount.toNumber(),
       };
     });
-    setCandidates(formatedList);
+    setCandidates(formattedCandidates);
   }
 
   // Validating if voter is eligible to vote
@@ -141,7 +141,7 @@ function App() {
           number={number}
           handleNumberChange={handleNumberChange}
           vote={vote}
-          canVote={canVote}
+          canVote={CanVote}
         />
       ) : (
         <Login connectWallet={connectWallet} />
