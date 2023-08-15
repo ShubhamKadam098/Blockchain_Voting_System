@@ -4,6 +4,7 @@ import { contractABI, contractAddress } from "./Constant/constants.js";
 import Login from "./Components/login.jsx";
 import Connected from "./Components/Connected.jsx";
 import { parseTransaction } from "ethers/lib/utils.js";
+import "./Styles/App.css";
 
 function App() {
   const [provider, setProvider] = useState(null);
