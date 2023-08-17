@@ -1,46 +1,51 @@
 import { ethers } from "ethers";
 import React, { useState } from "react";
+import Header from "./Header.jsx";
+import AlreadyVoted from "./AlreadyVoted.jsx";
 
 export default function Connected(props) {
   return (
     <>
+      <Header accountNumber={props.accountNumber}></Header>
       <div className="container">
-        <h1>You Are Connected to Metamask</h1>
-        <p>Account Number: {props.accountNumber}</p>
         <p> Remaining Time: {props.RemainingTime}</p>
         {props.canVote ? (
-          <p>You have Already Voted</p>
+          <AlreadyVoted></AlreadyVoted>
         ) : (
-          <div className="">
-            <input
-              type="number"
-              placeholder="Entern Candidate Index"
-              value={props.number}
-              onChange={props.handleNumberChange}
-            ></input>
-            <button className="login-button" onClick={props.vote}>
-              Vote
-            </button>
-          </div>
+          <>
+            <h1 className="votingHeadline">Vote For Your Candidate</h1>
+            <form id="votingInput" className="inputForm">
+              <input
+                type="number"
+                id="voterIndexInput"
+                placeholder="Enter the candidate index"
+              />
+              <button type="submit" id="voteButton" className="btn votebtn">
+                Vote
+              </button>
+            </form>
+          </>
         )}
-        <table id="myTable" className="candidates-table">
-          <thead>
-            <tr>
-              <th>Index</th>
-              <th>Candidate name</th>
-              <th>Candidate votes</th>
-            </tr>
-          </thead>
-          <tbody>
-            {props.candidates.map((candidate, index) => (
-              <tr key={index}>
-                <td>{candidate.index}</td>
-                <td>{candidate.name}</td>
-                <td>{candidate.voteCount}</td>
+        <div className="candidateListSection">
+          <table id="candidateList" className="candidatesTable">
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Candidate name</th>
+                <th>Candidate votes</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {props.candidates.map((candidate, index) => (
+                <tr key={index}>
+                  <td className="indexCol">{candidate.index}</td>
+                  <td className="nameCol">{candidate.name}</td>
+                  <td className="voteCol">{candidate.voteCount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
