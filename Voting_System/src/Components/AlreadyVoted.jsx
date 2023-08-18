@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Done from "../Assets/Done.png";
 
 export default function AlreadyVoted() {
