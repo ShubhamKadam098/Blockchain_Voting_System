@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import loading from "../Assets/loading.svg";
 
 export default function Loading() {
