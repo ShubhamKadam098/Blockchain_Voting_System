@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../src/styles/login.css";
 
 export default function LoginSection() {
   const [email, setEmail] = useState("");
@@ -8,7 +9,7 @@ export default function LoginSection() {
       <div className="container">
         <div id="loginSection">
           <form id="loginForm">
-            <h2 id="login-title">Admin Login</h2>
+            <h2 id="loginTitle">Admin Login</h2>
             <div className="Input">
               <label htmlFor="email">Login ID</label>
               <input

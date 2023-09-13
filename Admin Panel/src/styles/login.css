@@ -1,0 +1,81 @@
+/* Login Form */
+#mainBody {
+  background-color: #8ec5fc;
+  background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+}
+#loginTitle {
+  font-size: 1.75rem;
+  text-align: center;
+}
+#loginSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#loginForm {
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 55%;
+  min-height: 25rem;
+  gap: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /* box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px; */
+  padding-inline: 2.5rem;
+  padding-bottom: 2rem;
+  padding-top: 1rem;
+  background-color: white;
+}
+.Input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+#email,
+#passwordInput {
+  height: 2rem;
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+  font-size: 1.125rem;
+}
+input[type="file"]::file-selector-button {
+  font-family: "Jetbrains Mono", Helvetica, sans-serif;
+  color: white;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  border: none;
+  padding: 0.6rem 1rem;
+  margin-right: 1rem;
+  background-color: #339dff;
+  border-radius: 10px;
+  transition: all 0.125s ease-in-out;
+}
+input[type="file"]::file-selector-button:hover {
+  background-color: #339cffe0;
+}
+#preImg {
+  align-self: center;
+  justify-self: center;
+  width: 5rem;
+}
+.btn-validation {
+  padding-block: 1rem;
+  border-radius: 50px;
+  border: none;
+  color: white;
+  background-color: #339dff;
+  font-size: 0.95rem;
+  font-weight: bold;
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: all 0.125s ease-in-out;
+}
+.btn-validation:hover {
+  background-color: #339cffde;
+}
