@@ -1,0 +1,65 @@
+:root {
+  --primaryBlue: #00a7fa;
+  --primaryRed: #e06c78;
+  --primaryGreen: #0ab68b;
+  --primaryOrange: #dc8665;
+  --fontFamily: "Jetbrains Mono ", Arial, Helvetica, sans-serif;
+  --navbarLogoHeight: 3rem;
+}
+
+html,
+body,
+::before,
+::after {
+  box-sizing: border-box;
+  font-size: 1rem;
+  line-height: 1.7;
+  padding: 0;
+  margin: 0;
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+}
+ul,
+ol {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: inherit;
+}
+.btn {
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: var(--primaryBlue);
+  color: white;
+}
+.container {
+  max-width: 1280px;
+  width: 88%;
+  margin-inline: auto;
+}
+img {
+  height: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+.green {
+  background-color: var(--primaryGreen);
+}
+.red {
+  background-color: var(--primaryRed);
+}
+.blue {
+  background-color: var(--primaryBlue);
+}
+.orange {
+  background-color: var(--primaryOrange);
+}
