@@ -7,7 +7,7 @@ export default function LoginSection() {
     <div id="mainBody">
       <div className="container">
         <div id="loginSection">
-          <form id="loginForm" onSubmit={logIn}>
+          <form id="loginForm">
             <h2 id="login-title">Admin Login</h2>
             <div className="Input">
               <label htmlFor="email">Login ID</label>

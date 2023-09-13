@@ -1,9 +1,10 @@
 import { useState } from "react";
+import LoginSection from "./components/LoginSection";
 
 function App() {
   return (
     <>
-      <h1>Admin Panel</h1>
+      <LoginSection></LoginSection>
     </>
   );
 }
