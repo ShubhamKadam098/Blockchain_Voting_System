@@ -1,14 +1,35 @@
 import React, { useState } from "react";
 import "../../src/styles/login.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase.js";
 
 export default function LoginSection() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // User Login/SignIn
+  const logIn = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        setCurrentUser(user.email);
+        console.log(currentUser);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(`${errorCode}: ${errorMessage}`);
+      });
+  };
+
   return (
     <div id="mainBody">
       <div className="container">
         <div id="loginSection">
-          <form id="loginForm">
+          <form id="loginForm" onSubmit={logIn}>
             <h2 id="loginTitle">Admin Login</h2>
             <div className="Input">
               <label htmlFor="email">Login ID</label>
