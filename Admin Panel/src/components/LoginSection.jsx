@@ -14,9 +14,9 @@ export default function LoginSection() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
         setCurrentUser(user.email);
-        console.log(currentUser);
+        alert(`You have logged in successfully as : ${currentUser}`);
+        resetForm();
       })
       .catch((error) => {
         const errorCode = error.code;
