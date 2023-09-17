@@ -6,6 +6,13 @@ import { auth } from "../config/firebase.js";
 export default function LoginSection() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [currentUser, setCurrentUser] = useState("");
+
+  // Reset Login Form
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+  };
 
   // User Login/SignIn
   const logIn = (e) => {
@@ -48,6 +55,7 @@ export default function LoginSection() {
                 id="passwordInput"
                 name="passwordInput"
                 onChange={(e) => setPassword(e.target.value)}
+                value={password}
               />
             </div>
             <button type="submit" className="btn btn-validation">
