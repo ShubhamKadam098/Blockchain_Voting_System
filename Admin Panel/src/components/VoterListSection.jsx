@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/voterList.css";
 
 export default function VoterListSection() {
   const [voterList, setVoterList] = useState([]);
