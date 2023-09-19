@@ -1,0 +1,117 @@
+#voterSection .container {
+  margin-block: 2rem;
+  border: 1px solid var(--primaryBlue);
+  padding-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.voterHeading {
+  padding-inline: 2rem;
+  margin-block: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.voterHeading img {
+  height: 30px;
+}
+.voterTable {
+  width: 90%;
+  overflow: hidden;
+  margin-inline: auto;
+}
+.voterNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.searchInput {
+  width: 100%;
+  height: 100%;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 1rem;
+  font-family: "Jetbrains Mono", Arial, Helvetica, sans-serif;
+}
+.voterAddBtn div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.searchBtn,
+.voterAddBtn,
+.refreshBtn {
+  padding: 0.8rem 1.5rem;
+  width: 20%;
+  border-radius: 8px;
+  border: 1px solid black;
+}
+.voterAddBtn {
+  padding: 0.2rem 1rem;
+  margin-right: 1.5rem;
+}
+.voterList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-self: center;
+  padding: 0;
+}
+.voterListItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid black;
+  padding-inline: 0.5rem;
+  border-radius: 8px;
+  min-height: 2.25rem;
+  padding-block: 0.2rem;
+  padding-inline: 1rem;
+}
+.voterId {
+  font-size: 0.9rem;
+  width: 15%;
+  align-self: center;
+  border-right: 1px solid black;
+}
+.voterName {
+  font-size: 1rem;
+  width: 60%;
+  margin-block: 0;
+  padding-inline-start: 2rem;
+}
+
+.voterDelBtn,
+.voterUpdateBtn,
+.voterViewBtn {
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.voterDelBtn img,
+.voterUpdateBtn img,
+.voterViewBtn img {
+  height: 18px;
+}
+
+.voterUpdateBtn {
+  background-color: var(--primaryGreen);
+}
+.voterDelBtn {
+  background-color: var(--primaryRed);
+}
+.voterItemBtn {
+  display: flex;
+  gap: 3rem;
+}
+
+.noVoterHeading {
+  text-align: center;
+  margin-block: 1rem;
+}
