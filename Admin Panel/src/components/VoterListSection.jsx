@@ -1,9 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/voterList.css";
+import {
+  getDocs,
+  collection,
+  doc,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
+
+import { db } from "../config/firebase.js";
 
 export default function VoterListSection() {
   const [voterList, setVoterList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+
+  // Database collection Reference
+  const voterCollectionRef = collection(db, "Voters");
+
+  // Fetch Voters List
+  const getVoters = async () => {
+    try {
+      const data = await getDocs(voterCollectionRef);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setVoterList(filteredData);
+      console.log(filteredData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getVoters();
+  }, []);
+
   return (
     <section id="voterSection">
       <div className="container">
@@ -28,7 +60,7 @@ export default function VoterListSection() {
                 setSearchInput(e.target.value);
               }}
             />
-            <button className="btn refreshBtn orange">
+            <button className="btn refreshBtn orange" onClick={getVoters}>
               <img
                 src="./src/assets/Refresh.png"
                 alt=""
