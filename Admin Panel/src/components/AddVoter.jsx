@@ -14,6 +14,10 @@ const AddVoter = () => {
   const [voterFingerprint, setVoterFingerprint] = useState(null);
   const addVoterForm = useRef(null);
 
+  const resetForm = () => {
+    addVoterForm.current.reset(); // Use the reset method on the form reference
+  };
+
   const addVoter = async (e) => {
     e.preventDefault();
     if (
