@@ -1,11 +1,25 @@
 import React from "react";
+import "../styles/popup.css";
+import "../styles/viewVoter.css";
+import NoImageFound from "../assets/NoImageFound.png";
 
 const ViewVoter = () => {
+  const initialVoterState = {
+    name: "",
+    age: 0,
+    aadharNumber: "",
+    pin: null,
+    city: "",
+    profile: NoImageFound,
+  };
+
+  const [voter, setVoter] = useState(initialVoterState);
+
   return (
     <div className="popup">
       <div className="popup-content">
         <section className="viewVoter">
-          <button className="btn backBtn" onClick={reset}>
+          <button className="btn backBtn">
             <img src="./src/assets/back.png" alt="Back" /> Back
           </button>
           <h3 className="viewVoterHeading">Voter Details</h3>
