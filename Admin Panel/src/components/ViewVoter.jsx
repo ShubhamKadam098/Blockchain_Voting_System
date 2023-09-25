@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "../styles/popup.css";
 import "../styles/viewVoter.css";
 import NoImageFound from "../assets/NoImageFound.png";
@@ -14,6 +14,39 @@ const ViewVoter = () => {
   };
 
   const [voter, setVoter] = useState(initialVoterState);
+
+  const getVoterDetails = useCallback(async () => {
+    if (!selectedViewVoter) return;
+    const voterRef = doc(db, "Voters", `${selectedViewVoter}`);
+
+    try {
+      const docSnap = await getDoc(voterRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setVoter((prevVoter) => ({
+          ...prevVoter,
+          name: data.Name,
+          age: data.Age,
+          aadharNumber: selectedViewVoter,
+          city: data.City,
+          pin: data.Pin,
+        }));
+
+        getVoterProfile();
+      } else {
+        console.log("Document does not exist");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [selectedViewVoter]);
+
+  const getVoterProfile = async () => {};
+
+  useEffect(() => {
+    getVoterDetails();
+  }, [getVoterDetails]);
 
   return (
     <div className="popup">
