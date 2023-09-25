@@ -2,8 +2,11 @@ import React, { useEffect, useState, useCallback } from "react";
 import "../styles/popup.css";
 import "../styles/viewVoter.css";
 import NoImageFound from "../assets/NoImageFound.png";
+import { doc, getDoc } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../config/firebase.js";
 
-const ViewVoter = () => {
+function ViewVoterPopup({ selectedViewVoter, setSelectedViewVoter }) {
   const initialVoterState = {
     name: "",
     age: 0,
@@ -14,6 +17,11 @@ const ViewVoter = () => {
   };
 
   const [voter, setVoter] = useState(initialVoterState);
+
+  const reset = () => {
+    setVoter(initialVoterState);
+    setSelectedViewVoter(null);
+  };
 
   const getVoterDetails = useCallback(async () => {
     if (!selectedViewVoter) return;
@@ -61,7 +69,7 @@ const ViewVoter = () => {
     <div className="popup">
       <div className="popup-content">
         <section className="viewVoter">
-          <button className="btn backBtn">
+          <button className="btn backBtn" onClick={reset}>
             <img src="./src/assets/back.png" alt="Back" /> Back
           </button>
           <h3 className="viewVoterHeading">Voter Details</h3>
@@ -83,6 +91,6 @@ const ViewVoter = () => {
       </div>
     </div>
   );
-};
+}
 
-export default ViewVoter;
+export default ViewVoterPopup;
