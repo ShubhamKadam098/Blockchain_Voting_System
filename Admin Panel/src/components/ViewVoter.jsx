@@ -42,7 +42,16 @@ const ViewVoter = () => {
     }
   }, [selectedViewVoter]);
 
-  const getVoterProfile = async () => {};
+  const getVoterProfile = async () => {
+    try {
+      const imageRef = ref(storage, `Profile/${selectedViewVoter}`);
+      const imageURL = await getDownloadURL(imageRef);
+      setVoter((prevVoter) => ({ ...prevVoter, profile: imageURL }));
+    } catch (error) {
+      console.error("Error fetching Profile Image from database:", error);
+      setVoter((prevVoter) => ({ ...prevVoter, profile: NoImageFound }));
+    }
+  };
 
   useEffect(() => {
     getVoterDetails();
