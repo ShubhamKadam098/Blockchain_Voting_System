@@ -5,6 +5,16 @@ import PropTypes from "prop-types";
 import "../styles/navbar.css";
 
 const Navbar = ({ currentUser, setCurrentUser }) => {
+  function logOut() {
+    signOut(auth)
+      .then(() => {
+        alert("You Have Signed Out!");
+        setCurrentUser(null);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
   return (
     <header>
       <div className="container">
