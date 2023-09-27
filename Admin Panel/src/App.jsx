@@ -1,17 +1,30 @@
-import { useState } from "react";
-import LoginSection from "./components/LoginSection";
+import { useEffect, useState } from "react";
+import LoginSection from "./components/LoginSection.jsx";
+import Main from "./components/MainPage.jsx";
+import Navbar from "./components/Navbar.jsx";
 import "./styles/main.css";
-import Navbar from "./components/Navbar";
-import VoterListSection from "./components/VoterListSection";
-import AddVoter from "./components/AddVoter";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [selectedViewVoter, setSelectedViewVoter] = useState(null);
+  const [selectedUpdateVoter, setSelectedUpdateVoter] = useState(null);
+
   return (
     <>
-      <Navbar></Navbar>
-      <LoginSection></LoginSection>
-      <VoterListSection></VoterListSection>
-      <AddVoter></AddVoter>
+      <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      {currentUser ? (
+        <Main
+          selectedViewVoter={selectedViewVoter}
+          setSelectedViewVoter={setSelectedViewVoter}
+          selectedUpdateVoter={selectedUpdateVoter}
+          setSelectedUpdateVoter={setSelectedUpdateVoter}
+        />
+      ) : (
+        <LoginSection
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+        />
+      )}
     </>
   );
 }
