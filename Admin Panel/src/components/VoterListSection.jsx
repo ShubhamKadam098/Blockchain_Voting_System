@@ -7,10 +7,16 @@ import {
   deleteDoc,
   getDoc,
 } from "firebase/firestore";
-
+import ViewLogo from "../assets/ViewLogo.png";
+import EditLogo from "../assets/EditLogo.png";
+import DeleteLogo from "../assets/DeleteLogo.png";
 import { db } from "../config/firebase.js";
+const IMAGE_PATH_PREFIX = "./src/assets/";
 
-export default function VoterListSection() {
+export default function VoterListSection({
+  setSelectedViewVoter,
+  setSelectedUpdateVoter,
+}) {
   const [voterList, setVoterList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
@@ -32,18 +38,20 @@ export default function VoterListSection() {
     }
   };
 
+  // Remove Voter
+  const removeVoter = async (id) => {};
   useEffect(() => {
     getVoters();
   }, []);
 
   return (
-    <section id="voterSection">
+    <div id="voterSection">
       <div className="container">
         <div className="voterHeading">
           <h3 className="voterHeading">Voter List</h3>
           <button className="btn voterAddBtn blue">
             <div className="">
-              <img src="./src/assets/AddPeopleLogo.png" alt="" />{" "}
+              <img src={`${IMAGE_PATH_PREFIX}AddPeopleLogo.png`} alt="" />{" "}
               <p>Add Voter</p>
             </div>
           </button>
@@ -56,13 +64,11 @@ export default function VoterListSection() {
               className="searchInput"
               placeholder="Search the Voter"
               value={searchInput}
-              onChange={(e) => {
-                setSearchInput(e.target.value);
-              }}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
             <button className="btn refreshBtn orange" onClick={getVoters}>
               <img
-                src="./src/assets/Refresh.png"
+                src={`${IMAGE_PATH_PREFIX}Refresh.png`}
                 alt=""
                 className="refreshImg"
               />{" "}
@@ -70,38 +76,38 @@ export default function VoterListSection() {
             </button>
           </div>
           <ul className="voterList">
-            {voterList != "" ? (
-              voterList.map((voter) => (
-                <li className="voterListItem" key={voter.AadharNumber}>
-                  <h5 className="voterId">{voter.AadharNumber}</h5>
-                  <h5 className="voterName">{voter.Name}</h5>
-                  <div className="voterItemBtn">
-                    <button className="btn voterViewBtn">
-                      <img
-                        src="./src/assets/ViewLogo.png"
-                        className="viewLogo"
-                      />
-                      View
-                    </button>
-                    <button className="btn voterUpdateBtn">
-                      <img src="./src/assets/EditLogo.png" alt="" />
-                      Update
-                    </button>
-                    <button className="btn voterDelBtn">
-                      <img src="./src/assets/DeleteLogo.png" alt="" />
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))
-            ) : (
-              <>
-                <h3 className="noVoterHeading">No Voters Found!!</h3>
-              </>
-            )}
+            {voterList.map((voter) => (
+              <li className="voterListItem" key={voter.AadharNumber}>
+                <h5 className="voterId">{voter.AadharNumber}</h5>
+                <h5 className="voterName">{voter.Name}</h5>
+                <div className="voterItemBtn">
+                  <button
+                    className="btn voterViewBtn"
+                    onClick={() => setSelectedViewVoter(voter.AadharNumber)}
+                  >
+                    <img src={ViewLogo} alt="" className="viewLogo" />
+                    View
+                  </button>
+                  <button
+                    className="btn voterUpdateBtn"
+                    onClick={() => setSelectedUpdateVoter(voter.AadharNumber)}
+                  >
+                    <img src={EditLogo} alt="" />
+                    Update
+                  </button>
+                  <button
+                    className="btn voterDelBtn"
+                    onClick={() => removeVoter(voter.id)}
+                  >
+                    <img src={DeleteLogo} alt="" />
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
