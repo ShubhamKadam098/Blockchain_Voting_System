@@ -6,7 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../config/firebase.js";
 
-function ViewVoterPopup({ selectedViewVoter, setSelectedViewVoter }) {
+function ViewVoter({ selectedViewVoter, setSelectedViewVoter }) {
   const initialVoterState = {
     name: "",
     age: 0,
@@ -93,4 +93,4 @@ function ViewVoterPopup({ selectedViewVoter, setSelectedViewVoter }) {
   );
 }
 
-export default ViewVoterPopup;
+export default ViewVoter;
