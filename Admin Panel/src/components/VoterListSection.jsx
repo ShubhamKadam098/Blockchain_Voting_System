@@ -95,7 +95,7 @@ export default function VoterListSection({
             </button>
           </div>
           <ul className="voterList">
-            {voterList.map((voter) => (
+            {filteredVoterList.map((voter) => (
               <li className="voterListItem" key={voter.AadharNumber}>
                 <h5 className="voterId">{voter.AadharNumber}</h5>
                 <h5 className="voterName">{voter.Name}</h5>
