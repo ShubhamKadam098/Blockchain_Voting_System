@@ -38,6 +38,11 @@ export default function VoterListSection({
     }
   };
 
+  // Filtered voter list based on searchInput
+  const filteredVoterList = voterList.filter((voter) =>
+    String(voter.AadharNumber).includes(searchInput)
+  );
+
   // Remove Voter
   const removeVoter = async (id) => {
     if (!window.confirm("Are you sure you want to delete the voter?")) {
