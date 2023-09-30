@@ -39,7 +39,21 @@ export default function VoterListSection({
   };
 
   // Remove Voter
-  const removeVoter = async (id) => {};
+  const removeVoter = async (id) => {
+    if (!window.confirm("Are you sure you want to delete the voter?")) {
+      console.log("Operation Cancelled");
+      return;
+    }
+    try {
+      const voterDoc = doc(db, "Voters", id);
+      await deleteDoc(voterDoc);
+      // After deletion, update the list of voters
+      getVoters();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getVoters();
   }, []);
