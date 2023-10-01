@@ -22,7 +22,7 @@ export default function LoginSection() {
         // Signed in
         const user = userCredential.user;
         setCurrentUser(user.email);
-        alert(`You have logged in successfully as : ${currentUser}`);
+        alert(`You have logged in successfully as : ${user.email}`);
         resetForm();
       })
       .catch((error) => {
