@@ -21,6 +21,12 @@ const MainPage = ({
           setSelectedViewVoter={setSelectedViewVoter}
         ></ViewVoter>
       )}
+      {selectedUpdateVoter !== null && (
+        <UpdateVoter
+          selectedUpdateVoter={selectedUpdateVoter}
+          setSelectedUpdateVoter={setSelectedUpdateVoter}
+        ></UpdateVoter>
+      )}
     </>
   );
 };
