@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { auth } from "./config/firebase.js";
 import { onAuthStateChanged } from "firebase/auth";
 import LoginSection from "./components/LoginSection.jsx";
-import Main from "./components/MainPage.jsx";
+import MainPage from "./components/MainPage.jsx";
 import Navbar from "./components/Navbar.jsx";
 import "./styles/main.css";
 
@@ -29,7 +29,7 @@ function App() {
     <>
       <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       {currentUser ? (
-        <Main
+        <MainPage
           selectedViewVoter={selectedViewVoter}
           setSelectedViewVoter={setSelectedViewVoter}
           selectedUpdateVoter={selectedUpdateVoter}
