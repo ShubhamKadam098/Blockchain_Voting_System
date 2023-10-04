@@ -21,6 +21,11 @@ const UpdateVoter = ({ selectedUpdateVoter, setSelectedUpdateVoter }) => {
     setVoter((prevState) => ({ ...prevState, confirm: false }));
   };
 
+  const reset = () => {
+    setVoter(initialVoterState);
+    setSelectedUpdateVoter(null);
+  };
+
   const getVoterProfile = async (voterID) => {
     try {
       const imageRef = ref(storage, `Profile/${voterID}`);
