@@ -1,6 +1,7 @@
 import VoterListSection from "./VoterListSection.jsx";
 import AddVoter from "./AddVoter.jsx";
 import ViewVoter from "./ViewVoter.jsx";
+import UpdateVoter from "./UpdateVoter.jsx";
 
 const MainPage = ({
   selectedViewVoter,
