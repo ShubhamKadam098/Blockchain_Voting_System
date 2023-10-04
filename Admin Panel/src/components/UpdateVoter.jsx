@@ -1,6 +1,70 @@
 import React from "react";
 
-const UpdateVoter = () => {
+const UpdateVoter = ({ selectedUpdateVoter, setSelectedUpdateVoter }) => {
+  const initialVoterState = {
+    name: "",
+    age: "",
+    aadharNumber: "",
+    pin: "",
+    city: "",
+    profile: NoImageFound,
+    confirm: false,
+  };
+
+  const [voter, setVoter] = useState(initialVoterState);
+
+  const handleYesClick = () => {
+    setVoter((prevState) => ({ ...prevState, confirm: true }));
+  };
+
+  const handleNoClick = () => {
+    setVoter((prevState) => ({ ...prevState, confirm: false }));
+  };
+
+  const getVoterProfile = async (voterID) => {
+    try {
+      const imageRef = ref(storage, `Profile/${voterID}`);
+      const imageURL = await getDownloadURL(imageRef);
+      setVoter((prevState) => ({ ...prevState, profile: imageURL }));
+    } catch (error) {
+      console.error("Error fetching Profile Image from the database:", error);
+      setVoter((prevState) => ({ ...prevState, profile: NoImageFound }));
+      throw error;
+    }
+  };
+
+  const getVoterDetails = async (voterID) => {
+    if (!voterID) return;
+    const voterRef = doc(db, "Voters", `${voterID}`);
+    try {
+      const docSnap = await getDoc(voterRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setVoter((prevState) => ({
+          ...prevState,
+          name: data.Name,
+          age: data.Age,
+          aadharNumber: selectedUpdateVoter, // Changed from selectedViewVoter
+          city: data.City,
+          pin: data.Pin,
+        }));
+        await getVoterProfile(voterID);
+      } else {
+        console.log("Document does not exist");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateVoterDetails = async () => {
+    // Implement the logic to update voter details here
+  };
+
+  useEffect(() => {
+    getVoterDetails(selectedUpdateVoter);
+    setVoter((prevState) => ({ ...prevState, confirm: false }));
+  }, [selectedUpdateVoter]);
   return (
     <div className="popup">
       <div className="popup-content">
