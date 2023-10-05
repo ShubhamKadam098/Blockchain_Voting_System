@@ -1,4 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import NoImageFound from "../assets/NoImageFound.png";
+import { storage, db } from "../config/firebase";
+import { ref, getDownloadURL } from "firebase/storage";
+import { doc, getDoc } from "firebase/firestore";
+import "../styles/updateVoter.css";
+import "../styles/popup.css";
 
 const UpdateVoter = ({ selectedUpdateVoter, setSelectedUpdateVoter }) => {
   const initialVoterState = {
