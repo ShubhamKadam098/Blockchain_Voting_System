@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SignIn = () => {
+  const { error, setError } = useState("");
   return (
     <>
       <section className="w-full h-screen bg-[url('https://149695847.v2.pressablecdn.com/wp-content/uploads/2019/05/india-1540x1023.jpg')] bg-cover bg-center">
