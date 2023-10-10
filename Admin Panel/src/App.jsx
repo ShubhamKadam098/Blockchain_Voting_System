@@ -1,46 +1,39 @@
-import { useEffect, useState } from "react";
-import { auth } from "./config/firebase.js";
-import { onAuthStateChanged } from "firebase/auth";
-import LoginSection from "./components/LoginSection.jsx";
-import MainPage from "./components/MainPage.jsx";
-import Navbar from "./components/Navbar.jsx";
-import "./styles/main.css";
+import React from "react";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import Dashboard from "../src/components/Pages/Dashboard";
+import AddVoter from "../src/components/Pages/AddVoter";
+import VoterList from "./components/VoterList/VoterList";
+import VoterDetails from "./components/Pages/VoterDetails";
+import UpdateVoter from "./components/Pages/UpdateVoter";
+import ElectionResult from "./components/Pages/ElectionResult";
+import SignIn from "./components/Login/SignIn";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [selectedViewVoter, setSelectedViewVoter] = useState(null);
-  const [selectedUpdateVoter, setSelectedUpdateVoter] = useState(null);
-
-  // Use Firebase Auth State Listener
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user.email);
-      } else {
-        setCurrentUser(null);
-      }
-    });
-
-    // Unsubscribe to the listener when the component unmounts
-    return () => unsubscribe();
-  }, []);
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path="/">
+          <Route path="" element={<Dashboard />} />
+          <Route path="voterlist" element={<VoterList />} />
+          <Route path="add_voter" element={<AddVoter />} />
+          <Route path="view_voter" element={<VoterDetails />} />
+          <Route path="update_voter" element={<UpdateVoter />} />
+          <Route path="election" element={<Element />} />
+          <Route path="results" element={<ElectionResult />} />
+        </Route>
+        <Route path="login" element={<SignIn />}></Route>
+      </>
+    )
+  );
 
   return (
     <>
-      <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
-      {currentUser ? (
-        <MainPage
-          selectedViewVoter={selectedViewVoter}
-          setSelectedViewVoter={setSelectedViewVoter}
-          selectedUpdateVoter={selectedUpdateVoter}
-          setSelectedUpdateVoter={setSelectedUpdateVoter}
-        />
-      ) : (
-        <LoginSection
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-        />
-      )}
+      <RouterProvider router={router} />
     </>
   );
 }
