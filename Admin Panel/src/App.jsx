@@ -5,6 +5,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+import { AuthProvider } from "./Context/AuthContext";
 import Dashboard from "../src/components/Pages/Dashboard";
 import AddVoter from "../src/components/Pages/AddVoter";
 import VoterList from "./components/VoterList/VoterList";
@@ -33,7 +34,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   );
 }
