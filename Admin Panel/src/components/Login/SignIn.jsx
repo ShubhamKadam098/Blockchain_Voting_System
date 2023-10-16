@@ -1,9 +1,38 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import LoginHeader from "../Header/LoginHeader";
+import Footer from "../Footer/Footer";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../Context/AuthContext";
 
 const SignIn = () => {
-  const { error, setError } = useState("");
+  const EmailRef = useRef();
+  const PasswordRef = useRef();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { signin, currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!EmailRef.current.value || !PasswordRef.current.value) {
+      setError("Please provide a valid email and password");
+      return;
+    }
+    try {
+      setError("");
+      setLoading(true);
+      await signin(EmailRef.current.value, PasswordRef.current.value);
+      console.log(currentUser);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  }
+
   return (
     <>
+      <LoginHeader />
       <section className="w-full h-screen bg-[url('https://149695847.v2.pressablecdn.com/wp-content/uploads/2019/05/india-1540x1023.jpg')] bg-cover bg-center">
         <div className="min-h-screen flex flex-col justify-center sm:py-12 backdrop-brightness-50">
           <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
@@ -84,6 +113,7 @@ const SignIn = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };
