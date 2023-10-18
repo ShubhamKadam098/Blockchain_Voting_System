@@ -13,12 +13,13 @@ import VoterDetails from "./components/Pages/VoterDetails";
 import UpdateVoter from "./components/Pages/UpdateVoter";
 import ElectionResult from "./components/Pages/ElectionResult";
 import SignIn from "./components/Login/SignIn";
+import Layout from "./Layout";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/">
+        <Route path="/" element={<Layout />}>
           <Route path="" element={<Dashboard />} />
           <Route path="voterlist" element={<VoterList />} />
           <Route path="add_voter" element={<AddVoter />} />
