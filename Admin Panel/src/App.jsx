@@ -8,7 +8,7 @@ import {
 import { AuthProvider } from "./Context/AuthContext";
 import Dashboard from "../src/components/Pages/Dashboard";
 import AddVoter from "../src/components/Pages/AddVoter";
-import VoterList from "./components/VoterList/VoterList";
+import VoterList from "./components/Pages/VoterList/VoterList";
 import VoterDetails from "./components/Pages/VoterDetails";
 import UpdateVoter from "./components/Pages/UpdateVoter";
 import ElectionResult from "./components/Pages/ElectionResult";
