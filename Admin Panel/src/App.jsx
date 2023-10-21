@@ -6,6 +6,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import { AuthProvider } from "./Context/AuthContext";
+import { DatabaseProvider } from "./Context/DatabaseContext";
 import Dashboard from "../src/components/Pages/Dashboard";
 import AddVoter from "../src/components/Pages/AddVoter";
 import VoterList from "./components/Pages/VoterList/VoterList";
@@ -37,7 +38,9 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <DatabaseProvider>
+          <RouterProvider router={router} />
+        </DatabaseProvider>
       </AuthProvider>
     </>
   );
