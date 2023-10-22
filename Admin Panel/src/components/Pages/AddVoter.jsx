@@ -20,6 +20,33 @@ const AddVoter = () => {
   });
   const addVoterForm = useRef(null);
 
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === "fingerprints") {
+      // Handle multiple fingerprint files
+      const fingerprintFiles = Array.from(files);
+      setVoterData((prevData) => ({
+        ...prevData,
+        fingerprints: fingerprintFiles,
+        isFingerprintValid: fingerprintFiles.length === 10, // Check if exactly 10 files are selected
+      }));
+    } else if (name === "state") {
+      setVoterData((prevData) => ({
+        ...prevData,
+        state: value,
+      }));
+      console.log("New state:" + value);
+      console.log("New state2:" + voterData.state);
+    } else {
+      // Handle other input changes
+      setVoterData((prevData) => ({
+        ...prevData,
+        [name]: name === "profile" ? files[0] : value,
+      }));
+    }
+  };
+
   return (
     <>
       <div className="min-h-screen w-auto m-8 border border-black grow rounded-xl overflow-hidden p-8 ">
@@ -57,6 +84,7 @@ const AddVoter = () => {
                 name="profile"
                 accept="image/x-png,image/jpg,image/jpeg"
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800 "
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -73,6 +101,7 @@ const AddVoter = () => {
                 type="file"
                 name="fingerprints"
                 accept="image/BMP,image/bmp"
+                onChange={handleInputChange}
                 multiple
                 required
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800 "
@@ -90,6 +119,7 @@ const AddVoter = () => {
                 value={voterData.name}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                onChange={handleInputChange}
                 required
               />
               <label
@@ -109,6 +139,7 @@ const AddVoter = () => {
                 value={voterData.phone}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                onChange={handleInputChange}
                 required
               />
               <label
@@ -127,6 +158,7 @@ const AddVoter = () => {
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 value={voterData.email}
+                onChange={handleInputChange}
                 required
               />
               <label
@@ -145,6 +177,7 @@ const AddVoter = () => {
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 value={voterData.walletId}
+                onChange={handleInputChange}
                 required
               />
               <label
@@ -168,6 +201,7 @@ const AddVoter = () => {
               value={voterData.dob}
               className="mb-2 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  "
               placeholder="Select date"
+              onChange={handleInputChange}
             />
 
             {/* Address */}
@@ -180,6 +214,7 @@ const AddVoter = () => {
                   value={voterData.add1}
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
+                  onChange={handleInputChange}
                   required
                 />
                 <label
@@ -197,6 +232,7 @@ const AddVoter = () => {
                   value={voterData.add2}
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
+                  onChange={handleInputChange}
                   required
                 />
                 <label
@@ -217,6 +253,7 @@ const AddVoter = () => {
                   value={voterData.city}
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
+                  onChange={handleInputChange}
                   required
                 />
                 <label
@@ -234,6 +271,7 @@ const AddVoter = () => {
                   value={voterData.pin}
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
+                  onChange={handleInputChange}
                   required
                 />
                 <label
@@ -255,6 +293,7 @@ const AddVoter = () => {
               name="state"
               id="states"
               value={voterData.state}
+              onChange={handleInputChange}
               className="mb-4 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
               <option value="" disabled>
