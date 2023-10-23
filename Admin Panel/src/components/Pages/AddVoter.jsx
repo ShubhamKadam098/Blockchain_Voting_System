@@ -1,4 +1,8 @@
 import React, { useRef, useState } from "react";
+import { db, storage } from "../../Config/Firebase";
+import { setDoc, doc, getDoc } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
+import Loader from "../../assets/loading.svg";
 
 const AddVoter = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +22,20 @@ const AddVoter = () => {
     fingerprints: [],
     isFingerprintValid: false,
   });
+
+  function generateRandom12DigitNumber() {
+    const min = 100000000000;
+    const max = 999999999999;
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    return randomNumber.toString();
+  }
   const addVoterForm = useRef(null);
+
+  const resetForm = () => {
+    addVoterForm.current.reset();
+    resetFields();
+  };
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -44,6 +61,137 @@ const AddVoter = () => {
         ...prevData,
         [name]: name === "profile" ? files[0] : value,
       }));
+    }
+  };
+
+  const resetFields = () => {
+    setVoterData({
+      name: "",
+      aadharNumber: "",
+      dob: "",
+      phone: "",
+      email: "",
+      walletId: "",
+      add1: "",
+      add2: "",
+      city: "",
+      pin: 0,
+      state: "Choose a state",
+      profile: null,
+      fingerprints: [],
+      isFingerprintValid: false,
+    });
+  };
+
+  const addVoter = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const {
+      name,
+      dob,
+      phone,
+      email,
+      walletId,
+      add1,
+      add2,
+      city,
+      pin,
+      state,
+      profile,
+      fingerprints,
+      isFingerprintValid,
+    } = voterData;
+
+    if (
+      !name ||
+      dob === null ||
+      !phone ||
+      !email ||
+      !walletId ||
+      !add1 ||
+      !city ||
+      pin === null ||
+      state === "Choose a state" ||
+      !profile ||
+      !isFingerprintValid
+    ) {
+      alert("All fields are required, and 10 fingerprint files are mandatory!");
+      setLoading(false);
+      return;
+    }
+
+    const aadharNumber = generateRandom12DigitNumber();
+
+    const voterRef = doc(db, "Voters", aadharNumber);
+    const voterProfileRef = ref(storage, `Profile/${aadharNumber}`);
+    const docSnapshot = await getDoc(voterRef);
+
+    if (docSnapshot.exists()) {
+      alert("Voter already exists, cannot add a duplicate voter.");
+      console.log("Document already exists, cannot add a duplicate.");
+    } else {
+      try {
+        // Uploading data to the database
+        await setDoc(voterRef, {
+          AadharNumber: aadharNumber,
+          Name: name,
+          Phone: phone,
+          Email: email,
+          walletId: walletId,
+          DOB: dob,
+          Address1: add1,
+          Address2: add2,
+          City: city,
+          Pin: pin,
+          State: state,
+        });
+      } catch (error) {
+        console.error(`Error while adding data to the database: ${error}`);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Uploading profile image to storage
+        await uploadBytes(voterProfileRef, profile);
+      } catch (error) {
+        console.log(`Error while uploading profile image to storage: ${error}`);
+        setLoading(false);
+        return;
+      }
+
+      // Upload all fingerprint files in parallel
+      const fingerprintUploadPromises = fingerprints.map(
+        async (fingerprintFile, index) => {
+          const fingerprintRef = ref(
+            storage,
+            `VoterBiometrics/${aadharNumber}/${index}`
+          );
+          try {
+            await uploadBytes(fingerprintRef, fingerprintFile);
+          } catch (error) {
+            console.error(
+              `Error while uploading fingerprint image ${index}: ${error}`
+            );
+            setLoading(false);
+            throw error; // You can handle errors as needed
+          }
+        }
+      );
+
+      try {
+        // Wait for all fingerprint uploads to complete
+        await Promise.all(fingerprintUploadPromises);
+      } catch (error) {
+        console.error("Error while uploading fingerprint images:", error);
+        setLoading(false);
+        return;
+      }
+
+      alert("Congratulations! Voter has been added successfully.");
+      resetForm();
+      setLoading(false);
     }
   };
 
@@ -337,6 +485,7 @@ const AddVoter = () => {
           <button
             type="submit"
             className="w-1/2 mx-auto shadow-xl text-white text-lg bg-slate-900 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg px-5 py-2.5"
+            onClick={resetForm}
           >
             <p className="h-6 my-auto flex items-center justify-center">
               Reset
@@ -347,6 +496,7 @@ const AddVoter = () => {
             <button
               type="submit"
               className="w-1/2 mx-auto shadow-xl text-white text-lg bg-slate-900 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg px-5 py-2.5"
+              onClick={addVoter}
             >
               <p className="h-6 my-auto flex items-center justify-center">
                 Register
