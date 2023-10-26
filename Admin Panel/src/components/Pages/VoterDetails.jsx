@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-
+import { db, storage } from "../../Config/Firebase";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { doc, getDoc } from "firebase/firestore";
 import NoImageFound from "../../assets/NoImageFound.png";
 import { useSearchParams } from "react-router-dom";
 
@@ -22,12 +24,116 @@ const VoterDetails = () => {
   });
 
   const fingerprintList = [];
+  const testFingerprintlist = [];
   const [search, setSearch] = useSearchParams({ voterID: "" });
   const voterID = search.get("voterID");
+
+  // Fingerprint elements
+  for (let index = 0; index < voterData.fingerprints.length; index++) {
+    const element = voterData.fingerprints[index];
+    fingerprintList.push(
+      <div className="h-[100px] w-[100px] bg-slate-500 rounded-md object-cover  border border-slate-500 overflow-hidden">
+        <img className="aspect-square w-full" src={element} alt="" />
+      </div>
+    );
+  }
 
   // Handle Search Params
   const handleTitle = (event) => {
     setSearch({ voterID: event.target.value });
+  };
+
+  // Fetch Voter Demographic Details
+  const getVoterDetails = async (voter_id) => {
+    if (!voter_id) return;
+    const voterRef = doc(db, "Voters", `${voter_id}`);
+    try {
+      const docSnap = await getDoc(voterRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log(data);
+        setVoterData((prevState) => ({
+          ...prevState,
+          name: data.Name,
+          aadharNumber: data.AadharNumber,
+          dob: data.DOB,
+          phone: data.Phone,
+          email: data.Email,
+          walletId: data.walletId,
+          add1: data.Address1,
+          add2: data.Address2,
+          city: data.City,
+          pin: data.Pin,
+          state: data.State,
+        }));
+        await getVoterProfile(voter_id);
+        await getVoterFingerprints(voter_id);
+        console.log(voterData);
+        console.log(testFingerprintlist);
+      } else {
+        alert("Voter Does not exist! Please Enter valid details.");
+        console.log("Document does not exist");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Fetch Voter Profile Image
+  const getVoterProfile = async (voter_id) => {
+    try {
+      const imageRef = ref(storage, `Profile/${voter_id}`);
+      const imageURL = await getDownloadURL(imageRef);
+      if (imageURL) {
+        setVoterData((prevState) => ({ ...prevState, profile: imageURL }));
+      }
+    } catch (error) {
+      console.error("Error fetching Profile Image from the database:", error);
+      setVoterData((prevState) => ({ ...prevState, profile: NoImageFound }));
+      throw error;
+    }
+  };
+
+  //fetch Voter fingerprints
+  async function getVoterFingerprints(voter_id) {
+    const listRef = ref(storage, `VoterBiometrics/${voter_id}`);
+
+    const res = await listAll(listRef);
+
+    for (let item of res.items) {
+      const url = await getDownloadURL(item);
+      testFingerprintlist.push(url);
+    }
+    setVoterData((prevState) => ({
+      ...prevState,
+      fingerprints: testFingerprintlist,
+    }));
+  }
+
+  // Search Button
+  function handleSearch(e) {
+    e.preventDefault();
+    getVoterDetails(voterID);
+  }
+
+  const reset = () => {
+    setVoterData((prevState) => ({
+      ...prevState,
+      name: "",
+      aadharNumber: "",
+      dob: "",
+      phone: "",
+      email: "",
+      walletId: "",
+      add1: "",
+      add2: "",
+      city: "",
+      pin: 0,
+      state: "Choose a state",
+      profile: null,
+      fingerprints: [],
+      isFingerprintValid: false,
+    }));
   };
 
   return (
@@ -53,6 +159,7 @@ const VoterDetails = () => {
           <button
             type="submit"
             className=" font-semibold inline-flex items-center py-2.5 px-6 ms-2 text-sm text-white bg-slate-700 rounded-lg border border-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            onClick={handleSearch}
             disabled={voterID.length == 11 ? true : false}
           >
             <svg
