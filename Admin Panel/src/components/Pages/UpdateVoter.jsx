@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { db, storage } from "../../Config/Firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import editBtn from "../../assets/EditBtn.svg";
+import NoImageFound from "../../assets/NoImageFound.png";
 import Cancel from "../../assets/Cancel.svg";
 import { useSearchParams } from "react-router-dom";
 
@@ -54,8 +58,132 @@ const UpdateVoter = () => {
     }
   };
 
+  // Fetch Voter Profile Image
+  const getVoterProfile = async (voter_id) => {
+    try {
+      const imageRef = ref(storage, `Profile/${voter_id}`);
+      const imageURL = await getDownloadURL(imageRef);
+      if (imageURL) {
+        setVoterData((prevState) => ({ ...prevState, profile: imageURL }));
+      }
+    } catch (error) {
+      console.error("Error fetching Profile Image from the database:", error);
+      setVoterData((prevState) => ({ ...prevState, profile: NoImageFound }));
+      throw error;
+    }
+  };
+
+  // Fetch Voter Demographic Details
+  const getVoterDetails = async (voter_id) => {
+    if (!voter_id) return;
+    const voterRef = doc(db, "Voters", `${voter_id}`);
+    try {
+      const docSnap = await getDoc(voterRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log(data);
+        setVoterData((prevState) => ({
+          ...prevState,
+          name: data.Name,
+          aadharNumber: data.AadharNumber,
+          dob: data.DOB,
+          phone: data.Phone,
+          email: data.Email,
+          walletId: data.walletId,
+          add1: data.Address1,
+          add2: data.Address2,
+          city: data.City,
+          pin: data.Pin,
+          state: data.State,
+        }));
+        await getVoterProfile(voter_id);
+      } else {
+        alert("Voter Does not exist! Please Enter valid details.");
+        console.log("Document does not exist");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateVoterDetails = async () => {
+    try {
+      setLoadingState(true);
+      const voterDoc = doc(db, "Voters", voterID);
+      const voterProfileRef = ref(storage, `Profile/${voterID}`);
+
+      // Upload new demographic details
+      await updateDoc(voterDoc, {
+        AadharNumber: voterData.aadharNumber,
+        Address1: voterData.add1,
+        Address2: voterData.add2,
+        City: voterData.city,
+        DOB: voterData.dob,
+        Email: voterData.email,
+        walletId: voterData.walletId,
+        Name: voterData.name,
+        Phone: voterData.phone,
+        Pin: voterData.pin,
+        State: voterData.state,
+      });
+
+      // Upload new profile image
+      if (voterNewProfile) {
+        try {
+          await uploadBytes(voterProfileRef, voterNewProfile);
+        } catch (error) {
+          console.log(
+            `Error while uploading profile image to storage: ${error}`
+          );
+          setLoadingState(false);
+          return;
+        }
+      }
+
+      // Update the fingerprint
+      if (voterData.fingerprints.length === 10) {
+        const fingerprintUploadPromises = voterData.fingerprints.map(
+          async (fingerprintFile, index) => {
+            const fingerprintRef = ref(
+              storage,
+              `VoterBiometrics/${voterID}/${index}`
+            );
+            try {
+              await uploadBytes(fingerprintRef, fingerprintFile);
+            } catch (error) {
+              console.error(
+                `Error while uploading fingerprint image ${index}: ${error}`
+              );
+              setLoadingState(false);
+              throw error;
+            }
+          }
+        );
+
+        try {
+          // Wait for all fingerprint uploads to complete
+          await Promise.all(fingerprintUploadPromises);
+        } catch (error) {
+          console.error("Error while uploading fingerprint images:", error);
+          setLoadingState(false);
+          return;
+        }
+      }
+
+      alert("Voter details have been updated successfully.");
+      setLoadingState(false);
+    } catch (err) {
+      console.error(err);
+      setLoadingState(false);
+      return;
+    } finally {
+      setLoadingState(false);
+    }
+  };
+
   function handleSearch(e) {
     e.preventDefault();
+    getVoterDetails(voterID);
   }
   const reset = () => {
     setVoterData((prevState) => ({
@@ -437,6 +565,7 @@ const UpdateVoter = () => {
               ) : (
                 <button
                   type="button"
+                  onClick={updateVoterDetails}
                   className="flex-grow gap-[5px] items-center justify-center text-white inline-flex hover:text-white border border-green-600 bg-green-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  "
                   disabled={loadingState}
                 >
