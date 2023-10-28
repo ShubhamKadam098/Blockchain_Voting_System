@@ -1,7 +1,8 @@
 import React from "react";
+import ComminSoon from "../Dummy/ComminSoon";
 
 const Election = () => {
-  return <div>Election</div>;
+  return <ComminSoon />;
 };
 
 export default Election;
