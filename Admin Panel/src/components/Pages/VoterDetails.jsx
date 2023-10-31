@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { db, storage } from "../../Config/Firebase";
+import { db, storage } from "../../config/firebase.js";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { doc, getDoc } from "firebase/firestore";
 import NoImageFound from "../../assets/NoImageFound.png";

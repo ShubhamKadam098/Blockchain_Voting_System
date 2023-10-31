@@ -3,7 +3,7 @@ import TableRow from "./TableRow";
 import AddVoter from "../../../assets/AddVoter.png";
 import { getDocs, collection, doc, deleteDoc } from "firebase/firestore";
 import { ref, listAll, deleteObject } from "firebase/storage";
-import { db, storage } from "../../../Config/Firebase.js";
+import { db, storage } from "../../../config/firebase.js";
 import { Link, useSearchParams } from "react-router-dom";
 const VoterList = () => {
   const [voterList, setVoterList] = useState([]);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db, storage } from "../../Config/Firebase";
+import { db, storage } from "../../config/firebase.js";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import editBtn from "../../assets/EditBtn.svg";
