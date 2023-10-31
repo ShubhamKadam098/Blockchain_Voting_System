@@ -3,3 +3,6 @@ TestReact/
 Voting System Design Website/
 Documentation/
 constants.js
+.env
+.idea
+constant.js
