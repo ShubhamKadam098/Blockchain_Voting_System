@@ -17,6 +17,7 @@ import SignIn from "./components/Login/SignIn";
 import Layout from "./Layout";
 import Election from "./components/Pages/Election";
 import PrivateRoute from "./components/Login/PrivateRoute";
+import PageNotFound from "./components/Dummy/PageNotFound";
 
 function App() {
   const router = createBrowserRouter(
@@ -50,6 +51,7 @@ function App() {
           />
         </Route>
         <Route path="login" element={<SignIn />}></Route>
+        <Route path="*" element={<PageNotFound />}></Route>
       </>
     )
   );
