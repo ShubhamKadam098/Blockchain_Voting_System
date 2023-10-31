@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { db, storage } from "../../Config/Firebase";
+import { db, storage } from "../../config/firebase.js";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import Loader from "../../assets/loading.svg";
