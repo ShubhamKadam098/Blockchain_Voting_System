@@ -32,7 +32,6 @@ _Dashboard_
 _Already Voted_
 ![Voted](https://github.com/ShubhamKadam098/Blockchain_Voting_System/assets/119697848/543d22b5-b7e3-4032-b43c-ea0bb59faa7c)
 
-
 ## Features
 
 - **Security:** Utilizes blockchain cryptography to ensure the integrity and confidentiality of votes.
