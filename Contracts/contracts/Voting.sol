@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 contract Voting {
     struct Candidate {
         string name;
+        string partyName;
+        string city;
         uint256 voteCount;
     }
 
@@ -13,11 +15,23 @@ contract Voting {
 
     uint256 public startingTime;
     uint256 public endingTime;
-    
-    constructor (string[] memory _candidateNames, uint256 _durationInMin) {
+
+    constructor (
+        string[] memory _candidateNames,
+        string[] memory _partyNames,
+        string[] memory _cities,
+        uint256 _durationInMin
+    ) {
+        require(
+            _candidateNames.length == _partyNames.length && _candidateNames.length == _cities.length,
+            "Input lengths do not match"
+        );
+
         for (uint256 i = 0; i < _candidateNames.length; i++) {
             candidates.push(Candidate({
                 name: _candidateNames[i],
+                partyName: _partyNames[i],
+                city: _cities[i],
                 voteCount: 0
             }));
         }
@@ -27,14 +41,20 @@ contract Voting {
     }
 
     modifier onlyOwner {
-        require(msg.sender == owner);
+        require(msg.sender == owner, "Only contract owner can perform this action.");
         _;
     }
 
-    function addCandidate(string memory _name) public onlyOwner {
+    function addCandidate(
+        string memory _name,
+        string memory _partyName,
+        string memory _city
+    ) public onlyOwner {
         candidates.push(Candidate({
-                name: _name,
-                voteCount: 0
+            name: _name,
+            partyName: _partyName,
+            city: _city,
+            voteCount: 0
         }));
     }
 
@@ -46,7 +66,19 @@ contract Voting {
         voters[msg.sender] = true;
     }
 
-    function getAllVotesOfCandiates() public view returns (Candidate[] memory){
+    function getCandidateInfo(uint256 _index) public view returns (
+        string memory name,
+        string memory partyName,
+        string memory city,
+        uint256 voteCount
+    ) {
+        require(_index < candidates.length, "Invalid candidate index.");
+
+        Candidate memory candidate = candidates[_index];
+        return (candidate.name, candidate.partyName, candidate.city, candidate.voteCount);
+    }
+
+    function getAllVotesOfCandidates() public view returns (Candidate[] memory){
         return candidates;
     }
 
@@ -58,7 +90,7 @@ contract Voting {
         require(block.timestamp >= startingTime, "Voting has not started yet.");
         if (block.timestamp >= endingTime) {
             return 0;
-    }
+        }
         return endingTime - block.timestamp;
     }
 }
