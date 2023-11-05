@@ -6,6 +6,7 @@ constants.js
 .idea/
 .env
 constant.js
+firebase.json
 
 # Hardhat files
 cache
