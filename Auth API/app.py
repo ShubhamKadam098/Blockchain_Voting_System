@@ -10,6 +10,13 @@ app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
+cred = credentials.Certificate("Auth API/config/firebase.json")
+default_app = firebase_admin.initialize_app(cred, {
+    'storageBucket': 'votingauth-f7b31.appspot.com'
+})
+
+bucket = storage.bucket()
+
 # Define the directory where uploaded images will be saved
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 if not os.path.exists(UPLOAD_FOLDER):
@@ -37,6 +44,31 @@ class Verify(Resource):
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'bmp'
+
+def download_image(blob_path, filename):
+    blob = bucket.blob(blob_path)
+    if blob.exists():
+        try:
+            blob.download_to_filename(filename)
+            print(f'Image downloaded to {filename} using path {blob_path}')
+        except Exception as e:
+            print(f'Error downloading {filename}: {e}')
+    else:
+        print(f'Blob {blob_path} does not exist.')
+
+def download_voter_images(idNumber):
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = []
+        for num in range(0, 10):
+            blob_path = f"VoterBiometrics/{idNumber}/{num}"
+            filename = f"FPrintDB/{num}.BMP"
+
+            if not os.path.exists(os.path.dirname(filename)):
+                os.makedirs(os.path.dirname(filename))
+
+            futures.append(executor.submit(download_image, blob_path, filename))
+
+        concurrent.futures.wait(futures)
 
 api.add_resource(Verify, '/verify')
 
