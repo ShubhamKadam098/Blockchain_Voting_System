@@ -5,10 +5,14 @@ import os
 import uuid
 import cv2
 from skimage.feature import match_descriptors
+import firebase_admin
+from firebase_admin import credentials, storage
+import concurrent.futures
 
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
+
 
 cred = credentials.Certificate("Auth API/config/firebase.json")
 default_app = firebase_admin.initialize_app(cred, {
@@ -35,7 +39,7 @@ class Verify(Resource):
                 filename = str(uuid.uuid4()) + '.bmp'
                 filepath = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(filepath)
-                return is_match()
+                return is_match(aadharNumber)
 
             return {"Error": "Invalid file or file format not allowed. Only .bmp files are accepted."}, 400
 
@@ -44,6 +48,8 @@ class Verify(Resource):
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'bmp'
+
+api.add_resource(Verify, '/verify')
 
 def download_image(blob_path, filename):
     blob = bucket.blob(blob_path)
@@ -61,7 +67,8 @@ def download_voter_images(idNumber):
         futures = []
         for num in range(0, 10):
             blob_path = f"VoterBiometrics/{idNumber}/{num}"
-            filename = f"FPrintDB/{num}.BMP"
+            # Adjust the filename to save images within "Auth API" folder
+            filename = f"Auth API/FPrintDB/{num}.BMP"
 
             if not os.path.exists(os.path.dirname(filename)):
                 os.makedirs(os.path.dirname(filename))
@@ -70,13 +77,30 @@ def download_voter_images(idNumber):
 
         concurrent.futures.wait(futures)
 
-api.add_resource(Verify, '/verify')
+def delete_files_in_folder(folder_name):
+    folder_path = os.path.join(os.getcwd(), folder_name)  # Get the full path of the folder
 
-def is_match():
+    # Verify if the directory exists
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        for filename in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, filename)
+            try:
+                if os.path.isfile(file_path):
+                    os.remove(file_path)  # Remove the file
+                    print(f"Deleted: {filename}")  # Print the filename when deleted
+            except Exception as e:
+                print(f"Error deleting {file_path}: {e}")
+    else:
+        print(f"Directory '{folder_name}' does not exist or is not a folder.")
+
+
+def is_match(aadharNumber):
     try:
         sampleName = os.listdir(UPLOAD_FOLDER)[0]
         print('Sample Name: ' + sampleName)
         sample = cv2.imread(os.path.join(UPLOAD_FOLDER, sampleName))
+
+        download_voter_images(aadharNumber)
 
         orb = cv2.ORB_create() 
         input_kp, input_desc = orb.detectAndCompute(sample, None)
@@ -113,8 +137,10 @@ def is_match():
         }, 500
 
     finally:
-        for f in os.listdir(UPLOAD_FOLDER):
-            os.remove(os.path.join(UPLOAD_FOLDER, f))
+        delete_files_in_folder('Auth API/FPrintDB')
+        delete_files_in_folder('Auth API/uploads')
+
+        
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
