@@ -19,7 +19,19 @@ FBASE_STORAGE_BUCKET = os.getenv('FBASE_STORAGE_BUCKET')
 
 # Firebase initialization
 try:
-    cred = credentials.Certificate("Auth API/config/firebase.json")
+    cred = credentials.Certificate({
+    "type": os.getenv('FBASE_TYPE'),
+    "project_id": os.getenv('FBASE_PROJECT_ID'),
+    "private_key_id": os.getenv('FBASE_PRIVATE_KEY_ID'),
+    "private_key": os.getenv('FBASE_PRIVATE_KEY'),
+    "client_email": os.getenv('FBASE_CLIENT_EMAIL'),
+    "client_id": os.getenv('FBASE_CLIENT_ID'),
+    "auth_uri": os.getenv('FBASE_AUTH_URI'),
+    "token_uri": os.getenv('FBASE_TOKEN_URI'),
+    "auth_provider_x509_cert_url": os.getenv('FBASE_AUTH_PROVIDER_X509_CERT_URL'),
+    "client_x509_cert_url": os.getenv('FBASE_CLIENT_X509_CERT_URL'),
+    "universe_domain": os.getenv('FBASE_UNIVERSE_DOMAIN')
+})
     initialize_app(cred, {'storageBucket': FBASE_STORAGE_BUCKET})
     bucket = storage.bucket()
 except Exception as e:
