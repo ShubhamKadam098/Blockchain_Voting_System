@@ -80,6 +80,11 @@ class Verify(Resource):
 
             if file and '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() == 'bmp':
                 filename = str(uuid.uuid4()) + '.bmp'
+
+                # Check if the UPLOAD_FOLDER exists, if not, create it
+                if not os.path.exists(UPLOAD_FOLDER):
+                    os.makedirs(UPLOAD_FOLDER)
+                    
                 filepath = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(filepath)
                 return self.verify_fingerprint(aadharNumber)
