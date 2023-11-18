@@ -7,7 +7,7 @@ import useUser from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { currentUser, connectMetamask, fetchVoterDetails } = useUser();
+  const { currentUser, connectMetamask } = useUser();
   const [Fingerprint, setFingerprint] = useState(null);
   const [Loading, setLoading] = useState(false);
 
@@ -47,17 +47,28 @@ const Login = () => {
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      connectMetamask();
-                      console.log(currentUser);
-                    }}
-                    className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                  >
-                    Connect
-                  </button>
+                  {currentUser.walletId != "N/A" ? (
+                    <button
+                      type="submit"
+                      onClick={(e) => {
+                        e.preventDefault();
+                      }}
+                      className="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+                    >
+                      Connected
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await connectMetamask();
+                      }}
+                      className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+                    >
+                      Connect
+                    </button>
+                  )}
                 </form>
                 <form className="space-y-4 md:space-y-6" action="#">
                   <div>
