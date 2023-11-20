@@ -7,11 +7,15 @@ import useUser from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { currentUser, connectMetamask } = useUser();
+  const { currentUser, connectMetamask, fetchVoterDetails } = useUser();
   const [Fingerprint, setFingerprint] = useState(null);
   const [Loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser.walletId != "N/A") fetchVoterDetails();
+  }, [currentUser.walletId]);
 
   // Handle Submit button
   const handleSubmit = async (e) => {

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ethers } from "ethers";
-
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../Config/Firebase.js";
 const UserContext = React.createContext();
 
 export default function useUser() {
@@ -40,9 +41,51 @@ export function UserProvider({ children }) {
     }
   }
 
+  // Firebase Operation
+  // Get Voter Details
+  async function fetchVoterDetails() {
+    if (!currentUser.walletId) return;
+    console.log("Fetching Voter Details for: " + currentUser.walletId);
+    try {
+      const votersRef = collection(db, "Voters");
+      const q = query(votersRef, where("walletId", "==", currentUser.walletId));
+      const querySnapshot = await getDocs(q);
+      let documentFound = false;
+
+      querySnapshot.forEach((doc) => {
+        documentFound = true;
+
+        const data = doc.data();
+        console.log(data);
+        setCurrentUser((prev) => {
+          return {
+            ...prev,
+            aadharNumber: data.AadharNumber,
+            name: data.Name,
+            city: data.City,
+          };
+        });
+      });
+
+      if (documentFound == false) {
+        setError("Aadhar details were not found for this wallet!");
+        setCurrentUser((prev) => {
+          return {
+            ...prev,
+            walletId: "N/A",
+          };
+        });
+        return;
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   const value = {
     currentUser,
     connectMetamask,
+    fetchVoterDetails,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
