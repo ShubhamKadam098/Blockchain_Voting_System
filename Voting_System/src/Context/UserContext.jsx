@@ -21,6 +21,13 @@ export function UserProvider({ children }) {
   const [error, setError] = useState("");
   const [provider, setProvider] = useState(null);
 
+  // Deleting error after delay
+  useEffect(() => {
+    setTimeout(() => {
+      setError("");
+    }, 8000);
+  }, [error]);
+
   // Connect to metamask wallet
   async function connectMetamask() {
     if (!window.ethereum) {
@@ -84,6 +91,7 @@ export function UserProvider({ children }) {
 
   const value = {
     currentUser,
+    error,
     connectMetamask,
     fetchVoterDetails,
   };
