@@ -5,9 +5,16 @@ import LoginHeader from "../Header/LoginHeader";
 import Footer from "../Footer/Footer";
 import useUser from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import loader from "../../assets/loading.svg";
 
 const Login = () => {
-  const { currentUser, error, connectMetamask, fetchVoterDetails } = useUser();
+  const {
+    currentUser,
+    error,
+    connectMetamask,
+    fetchVoterDetails,
+    authFingerprint,
+  } = useUser();
   const [Fingerprint, setFingerprint] = useState(null);
   const [Loading, setLoading] = useState(false);
 
@@ -20,6 +27,14 @@ const Login = () => {
   // Handle Submit button
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    try {
+      await authFingerprint(Fingerprint);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,7 +181,17 @@ const Login = () => {
                         : false
                     }
                   >
-                    Authenticate
+                    {Loading ? (
+                      <img
+                        className="mx-auto h-6"
+                        width="40"
+                        height="40"
+                        src={loader}
+                        alt="Loading...."
+                      />
+                    ) : (
+                      "Authenticate"
+                    )}
                   </button>
                   <p className="text-sm font-light text-gray-500">
                     Aadhar Number not visible?

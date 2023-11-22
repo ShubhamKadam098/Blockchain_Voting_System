@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../Config/Firebase.js";
@@ -49,6 +49,7 @@ export function UserProvider({ children }) {
   }
 
   // Firebase Operation
+
   // Get Voter Details
   async function fetchVoterDetails() {
     if (!currentUser.walletId) return;
@@ -89,11 +90,60 @@ export function UserProvider({ children }) {
     }
   }
 
+  // Fingerprint Authentication
+  async function authFingerprint(Fingerprint) {
+    return new Promise((resolve, reject) => {
+      if (
+        Fingerprint == null ||
+        currentUser.aadharNumber == null ||
+        currentUser.walletId == null
+      ) {
+        setError("All fields are required");
+        reject("Required fields are missing");
+      } else {
+        console.log("Authenticating Fingerprint");
+
+        // Adding Form Data
+        const formData = new FormData();
+        formData.append("aadharNumber", currentUser.aadharNumber);
+        formData.append("FPrintImg", Fingerprint);
+
+        const requestOptions = {
+          method: "POST",
+          body: formData,
+          redirect: "follow",
+        };
+
+        fetch("http://127.0.0.1:5000/verify", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            if (result.Error) {
+              console.log(result.Error);
+            }
+            console.log(result.isValid);
+            setCurrentUser((prev) => {
+              return { ...prev, isValid: result.isValid };
+            });
+            console.log("Score: " + result.Score);
+            console.log(currentUser);
+            !result.isValid ? setError("Authentication Failed!") : "";
+            resolve();
+          })
+          .catch((error) => {
+            setError(error.message);
+            reject(error);
+          });
+      }
+    });
+  }
+
   const value = {
     currentUser,
     error,
     connectMetamask,
     fetchVoterDetails,
+    authFingerprint,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
