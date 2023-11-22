@@ -3,7 +3,7 @@ import FingerprintIcon from "../../assets/Fingerprint.png";
 import Metamask from "../../assets/metamaskIcon.svg";
 import LoginHeader from "../Header/LoginHeader";
 import Footer from "../Footer/Footer";
-import useUser from "../../context/UserContext";
+import useUser from "../../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import loader from "../../assets/loading.svg";
 
@@ -23,6 +23,14 @@ const Login = () => {
   useEffect(() => {
     if (currentUser.walletId != "N/A") fetchVoterDetails();
   }, [currentUser.walletId]);
+
+  // When authenticated
+  useEffect(() => {
+    if (currentUser.isValid) {
+      navigate("/");
+    }
+    console.log(currentUser);
+  }, [currentUser.isValid]);
 
   // Handle Submit button
   const handleSubmit = async (e) => {
