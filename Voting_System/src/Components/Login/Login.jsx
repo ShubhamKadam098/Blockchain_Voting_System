@@ -160,6 +160,7 @@ const Login = () => {
                           aria-describedby="file_input_help"
                           id="Fingerprint"
                           type="file"
+                          accept=".BMP, .bmp"
                           disabled={
                             currentUser.aadharNumber == "N/A" ? true : false
                           }
