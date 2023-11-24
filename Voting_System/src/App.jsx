@@ -9,11 +9,13 @@ import {
 
 import Login from "./components/Login/Login";
 import { UserProvider } from "./context/UserContext";
+import Dashboard from "./Components/Dashboard/Dashboard";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+        <Route path="/" element={<Dashboard />}></Route>
         <Route path="/login" element={<Login />}></Route>
       </>
     )
