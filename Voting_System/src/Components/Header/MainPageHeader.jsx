@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Logo from "./Logo";
 import AccountImg from "../../assets/AccountImg.png";
 import Logout from "../../assets/Logout.png";
-import useUser from "../../Context/UserContext";
+import useUser from "../../context/UserContext";
 
 const MainPageHeader = () => {
   const { currentUser, logout } = useUser();
