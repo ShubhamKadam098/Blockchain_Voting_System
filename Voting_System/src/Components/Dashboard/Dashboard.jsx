@@ -2,9 +2,15 @@ import React, { useEffect } from "react";
 import MainPageHeader from "../Header/MainPageHeader";
 import Footer from "../Footer/Footer";
 import useUser from "../../context/UserContext";
+import CandidateList from "./CandidateList";
 
 const Dashboard = () => {
-  const { currentUser, error, setError } = useUser();
+  const { currentUser, Candidates, error, setError, fetchCandidateList } =
+    useUser();
+
+  useEffect(() => {
+    fetchCandidateList();
+  }, []);
 
   return (
     <>
@@ -36,7 +42,9 @@ const Dashboard = () => {
         <h2 className="text-base">
           City: <span className="">{currentUser.city}</span>
         </h2>
+        <h4 className="text-right pr-4">Time Remaining: {RemainingTime}</h4>
       </div>
+      <CandidateList Candidates={Candidates} />
       <Footer />
     </>
   );

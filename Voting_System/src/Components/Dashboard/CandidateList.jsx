@@ -1,8 +1,10 @@
 import React from "react";
+import TableRow from "./TableRow";
 import useUser from "../../context/UserContext";
 
 const CandidateList = ({ Candidates }) => {
   const { currentUser } = useUser();
+
   return (
     <div className="min-h-screen w-auto mx-8 drop-shadow-lg grow rounded-xl overflow-hidden p-8 ">
       <h1 className="text-2xl font-semibold text-center p-2 rounded-xl bg-gray-800 text-white shadow-sm mb-8 tracking-wider ">
@@ -38,8 +40,12 @@ const CandidateList = ({ Candidates }) => {
             {Array.isArray(Candidates) ? (
               CandidateList.length > 0 ? (
                 Candidates.map((voter) => (
-                  // Table row
-                  <tr>voter</tr>
+                  <TableRow
+                    name={voter.name}
+                    candidateId={voter.index}
+                    city={voter.city}
+                    party={voter.party}
+                  />
                 ))
               ) : (
                 <tr className="">
