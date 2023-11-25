@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { contractABI, contractAddress } from "../constants/constant.js";
+import { contractABI, contractAddress } from "../Constant/constants.js";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../Config/Firebase.js";
 const UserContext = React.createContext();
@@ -22,6 +22,7 @@ export function UserProvider({ children }) {
   const [error, setError] = useState("");
   const [provider, setProvider] = useState(null);
   const [Candidates, setCandidates] = useState([]);
+  const [RemainingTime, setRemainingTime] = useState("");
 
   // Deleting error after delay
   useEffect(() => {
@@ -52,7 +53,6 @@ export function UserProvider({ children }) {
 
   // Fetching Candidate Information for Contract
   async function fetchCandidateList() {
-    console.log("Fetching Candidate List");
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
@@ -63,7 +63,6 @@ export function UserProvider({ children }) {
         signer
       );
       const candidatesList = await contract.getAllVotesOfCandidates();
-      console.log(candidatesList);
       const formattedCandidates = candidatesList.map((candidate, index) => {
         return {
           index: index,
@@ -73,11 +72,26 @@ export function UserProvider({ children }) {
           voteCount: candidate.voteCount.toNumber(),
         };
       });
-      console.log("Formatted List:", formattedCandidates);
       setCandidates(formattedCandidates);
-      console.log("Type of Candidates:", typeof formattedCandidates);
     } catch (error) {
       console.log(error);
+      setError(error.message);
+    }
+  }
+
+  async function fetchRemainingTime() {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      const time = await contract.getRemainingTime();
+      setRemainingTime(parseInt(time, 16));
+    } catch (error) {
       setError(error.message);
     }
   }
@@ -180,6 +194,8 @@ export function UserProvider({ children }) {
     fetchVoterDetails,
     authFingerprint,
     fetchCandidateList,
+    RemainingTime,
+    fetchRemainingTime,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

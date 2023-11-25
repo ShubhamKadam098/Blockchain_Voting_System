@@ -5,10 +5,18 @@ import useUser from "../../context/UserContext";
 import CandidateList from "./CandidateList";
 
 const Dashboard = () => {
-  const { currentUser, Candidates, error, setError, fetchCandidateList } =
-    useUser();
+  const {
+    currentUser,
+    Candidates,
+    error,
+    setError,
+    fetchCandidateList,
+    RemainingTime,
+    fetchRemainingTime,
+  } = useUser();
 
   useEffect(() => {
+    fetchRemainingTime();
     fetchCandidateList();
   }, []);
 
