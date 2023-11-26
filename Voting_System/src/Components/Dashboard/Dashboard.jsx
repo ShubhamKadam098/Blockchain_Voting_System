@@ -1,26 +1,31 @@
 import React, { useEffect } from "react";
 import MainPageHeader from "../Header/MainPageHeader";
 import Footer from "../Footer/Footer";
-import useUser from "../../Context/UserContext";
 import CandidateList from "./CandidateList";
+import useUser from "../../Context/UserContext";
 
 const Dashboard = () => {
   const {
     currentUser,
-    Candidates,
-    error,
-    setError,
-    fetchCandidateList,
     RemainingTime,
     fetchRemainingTime,
+    fetchCandidateList,
+    Candidates,
     canVote,
+    error,
+    setError,
   } = useUser();
 
-  useEffect(async () => {
+  useEffect(() => {
     fetchRemainingTime();
-    await canVote();
+    canVote();
     fetchCandidateList();
   }, []);
+
+  useEffect(() => {
+    console.log("Candidates:" + Candidates);
+    console.log(Candidates);
+  }, [Candidates]);
 
   return (
     <>

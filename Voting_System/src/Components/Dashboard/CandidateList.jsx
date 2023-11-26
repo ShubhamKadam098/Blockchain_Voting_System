@@ -1,6 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
-import useUser from "../../context/UserContext";
+import useUser from "../../Context/UserContext";
 import Success from "../Dashboard/Success";
 
 const CandidateList = ({ Candidates }) => {
