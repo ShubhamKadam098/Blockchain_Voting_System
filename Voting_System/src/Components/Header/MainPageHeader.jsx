@@ -29,7 +29,7 @@ const MainPageHeader = () => {
               }}
             >
               Logout
-              <img src={Logout} className="h-[20px]" alt="" srcset="" />
+              <img src={Logout} className="h-[20px]" alt="" srcSet="" />
             </button>
           </div>
         </div>
