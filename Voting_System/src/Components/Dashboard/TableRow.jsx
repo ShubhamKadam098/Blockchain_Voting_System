@@ -1,4 +1,5 @@
 import React from "react";
+import useUser from "../../Context/UserContext";
 
 const TableRow = ({
   name = "N/A",
@@ -6,6 +7,8 @@ const TableRow = ({
   party = "N/A",
   city = "N/A",
 }) => {
+  const { vote } = useUser();
+
   const partiesURL = {
     BJP: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Bharatiya_Janata_Party_logo.svg/180px-Bharatiya_Janata_Party_logo.svg.png",
     INC: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Indian_National_Congress_hand_logo.svg/150px-Indian_National_Congress_hand_logo.svg.png",
@@ -33,7 +36,12 @@ const TableRow = ({
         <img className="h-6 mx-auto" src={partiesURL[party]} alt="" srcSet="" />
       </td>
       <td className="px-6 py-4">
-        <button className="text-base  text-white bg-blue-600 rounded-full py-2 px-8 hover:bg-blue-800 font-semibold mx-auto">
+        <button
+          className="text-base  text-white bg-blue-600 rounded-full py-2 px-8 hover:bg-blue-800 font-semibold mx-auto"
+          onClick={() => {
+            vote(candidateId);
+          }}
+        >
           Vote
         </button>
       </td>

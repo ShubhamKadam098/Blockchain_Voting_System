@@ -120,6 +120,28 @@ export function UserProvider({ children }) {
     }
   }
 
+  // Sending voting transaction
+  async function vote(candidateId) {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+
+      // Transaction
+      const tx = await contract.vote(candidateId);
+      await tx.wait();
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      canVote();
+    }
+  }
+
   // Firebase Operation
 
   // Get Voter Details
@@ -221,6 +243,7 @@ export function UserProvider({ children }) {
     RemainingTime,
     fetchRemainingTime,
     canVote,
+    vote,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

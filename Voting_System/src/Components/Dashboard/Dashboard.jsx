@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MainPageHeader from "../Header/MainPageHeader";
 import Footer from "../Footer/Footer";
-import useUser from "../../context/UserContext";
+import useUser from "../../Context/UserContext";
 import CandidateList from "./CandidateList";
 
 const Dashboard = () => {
