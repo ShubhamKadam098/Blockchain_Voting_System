@@ -96,6 +96,30 @@ export function UserProvider({ children }) {
     }
   }
 
+  // Validating if voter is eligible to vote
+  async function canVote() {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      const voterStatus = await contract.voters(await signer.getAddress());
+      console.log("Voting status: " + voterStatus);
+      setCurrentUser((prev) => {
+        return {
+          ...prev,
+          isVoted: voterStatus,
+        };
+      });
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   // Firebase Operation
 
   // Get Voter Details
@@ -196,6 +220,7 @@ export function UserProvider({ children }) {
     fetchCandidateList,
     RemainingTime,
     fetchRemainingTime,
+    canVote,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

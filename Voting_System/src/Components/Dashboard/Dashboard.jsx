@@ -13,10 +13,12 @@ const Dashboard = () => {
     fetchCandidateList,
     RemainingTime,
     fetchRemainingTime,
+    canVote,
   } = useUser();
 
-  useEffect(() => {
+  useEffect(async () => {
     fetchRemainingTime();
+    await canVote();
     fetchCandidateList();
   }, []);
 
