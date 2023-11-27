@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Logo from "./Logo";
 import AccountImg from "../../assets/AccountImg.png";
 import Logout from "../../assets/Logout.png";
-import useUser from "../../context/UserContext";
+import useUser from "../../Context/UserContext";
 
 const MainPageHeader = () => {
   const { currentUser, logout } = useUser();
@@ -29,7 +29,7 @@ const MainPageHeader = () => {
               }}
             >
               Logout
-              <img src={Logout} className="h-[20px]" alt="" srcSet="" />
+              <img src={Logout} className="h-[20px]" alt="" srcset="" />
             </button>
           </div>
         </div>

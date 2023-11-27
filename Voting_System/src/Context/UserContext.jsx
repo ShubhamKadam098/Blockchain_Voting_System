@@ -232,6 +232,25 @@ export function UserProvider({ children }) {
     });
   }
 
+  async function logout() {
+    try {
+      if (confirm("Are you sure you want to log out?")) {
+        setCurrentUser({
+          name: "N/A",
+          aadharNumber: "N/A",
+          city: "N/A",
+          walletId: "N/A",
+          profile: "N/A",
+          isVoted: false,
+          isValid: false,
+        });
+        console.log("Logged Out!");
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   const value = {
     currentUser,
     Candidates,
@@ -244,6 +263,7 @@ export function UserProvider({ children }) {
     fetchRemainingTime,
     canVote,
     vote,
+    logout,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
