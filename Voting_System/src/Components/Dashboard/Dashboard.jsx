@@ -3,6 +3,7 @@ import MainPageHeader from "../Header/MainPageHeader";
 import Footer from "../Footer/Footer";
 import CandidateList from "./CandidateList";
 import useUser from "../../Context/UserContext";
+import VotingOver from "./VotingOver";
 
 const Dashboard = () => {
   const {
@@ -17,15 +18,19 @@ const Dashboard = () => {
   } = useUser();
 
   useEffect(() => {
-    fetchRemainingTime();
-    canVote();
-    fetchCandidateList();
+    handleReload();
   }, []);
 
   useEffect(() => {
     console.log("Candidates:" + Candidates);
     console.log(Candidates);
   }, [Candidates]);
+
+  const handleReload = async () => {
+    await canVote();
+    fetchRemainingTime();
+    fetchCandidateList();
+  };
 
   return (
     <>
@@ -59,7 +64,12 @@ const Dashboard = () => {
         </h2>
         <h4 className="text-right pr-4">Time Remaining: {RemainingTime}</h4>
       </div>
-      <CandidateList Candidates={Candidates} />
+      {RemainingTime > 0 ? (
+        <CandidateList Candidates={Candidates} />
+      ) : (
+        <VotingOver />
+      )}
+
       <Footer />
     </>
   );
