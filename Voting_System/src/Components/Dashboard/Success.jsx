@@ -1,4 +1,3 @@
-import React from "react";
 import vote from "../../assets/vote.png";
 
 const Success = () => {

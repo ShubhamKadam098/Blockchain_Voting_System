@@ -1,4 +1,3 @@
-import React from "react";
 import GithubIcon from "../../assets/GithubIcon.svg";
 
 const Footer = () => {
@@ -9,6 +8,7 @@ const Footer = () => {
           href="https://github.com/ShubhamKadam098"
           target="_blank"
           className="flex items-center gap-2 text-sm"
+          rel="noreferrer"
         >
           <img width="40" height="40" src={GithubIcon} alt="github" />
           @ShubhamKadam098

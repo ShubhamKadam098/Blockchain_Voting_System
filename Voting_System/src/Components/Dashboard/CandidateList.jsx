@@ -1,4 +1,3 @@
-import React from "react";
 import TableRow from "./TableRow";
 import useUser from "../../Context/UserContext";
 import Success from "../Dashboard/Success";
@@ -45,6 +44,7 @@ const CandidateList = ({ Candidates }) => {
                 CandidateList.length > 0 ? (
                   Candidates.map((voter) => (
                     <TableRow
+                      key={voter.index}
                       name={voter.name}
                       candidateId={voter.index}
                       city={voter.city}
