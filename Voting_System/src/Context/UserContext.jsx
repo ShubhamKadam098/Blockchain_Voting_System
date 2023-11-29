@@ -51,6 +51,39 @@ export function UserProvider({ children }) {
     }
   }
 
+  // Account Changed
+  useEffect(() => {
+    if (window.ethereum) {
+      const handleAccountsChanged = (accounts) => {
+        console.log("Accounts changed:", accounts);
+        if (accounts.length > 0 && accounts[0] !== currentUser.walletId) {
+          console.log("Account is Changed");
+          setCurrentUser((prev) => ({ ...prev, walletId: accounts[0] }));
+          setCurrentUser({
+            name: "N/A",
+            aadharNumber: "N/A",
+            city: "N/A",
+            walletId: "N/A",
+            profile: "N/A",
+            isVoted: false,
+            isValid: false,
+          });
+        } else {
+          console.log("No Account is found");
+        }
+      };
+
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+      };
+    }
+  }, [currentUser.walletId]);
+
   // Fetching Candidate Information for Contract
   async function fetchCandidateList() {
     try {
