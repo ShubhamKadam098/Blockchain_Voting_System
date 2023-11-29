@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import MainPageHeader from "../Header/MainPageHeader";
 import Footer from "../Footer/Footer";
 import CandidateList from "./CandidateList";
@@ -14,23 +14,28 @@ const Dashboard = () => {
     Candidates,
     canVote,
     error,
-    setError,
   } = useUser();
 
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}`;
+  };
+
   useEffect(() => {
-    handleReload();
+    fetchRemainingTime();
+    canVote();
+    fetchCandidateList();
   }, []);
 
   useEffect(() => {
     console.log("Candidates:" + Candidates);
     console.log(Candidates);
   }, [Candidates]);
-
-  const handleReload = async () => {
-    await canVote();
-    fetchRemainingTime();
-    fetchCandidateList();
-  };
 
   return (
     <>
@@ -62,7 +67,9 @@ const Dashboard = () => {
         <h2 className="text-base">
           City: <span className="">{currentUser.city}</span>
         </h2>
-        <h4 className="text-right pr-4">Time Remaining: {RemainingTime}</h4>
+        <h4 className="text-right pr-4">
+          Time Remaining: {formatTime(RemainingTime)}
+        </h4>
       </div>
       {RemainingTime > 0 ? (
         <CandidateList Candidates={Candidates} />
