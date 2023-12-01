@@ -6,6 +6,7 @@ import editBtn from "../../assets/EditBtn.svg";
 import NoImageFound from "../../assets/NoImageFound.png";
 import Cancel from "../../assets/Cancel.svg";
 import { useSearchParams } from "react-router-dom";
+import ImageLoading from "../Dummy/ImageLoading.jsx";
 
 const UpdateVoter = () => {
   const [voterData, setVoterData] = useState({
@@ -255,19 +256,21 @@ const UpdateVoter = () => {
           <form action="#" className="my-8">
             {/* Profile */}
             <div className="mx-auto flex flex-col items-center justify-center gap-6 my-6">
-              <div className="aspect-square bg-slate-300 rounded-xl h-56  border border-black shadow-lg overflow-hidden">
+              <div className="aspect-square bg-slate-300 rounded-xl h-56 border border-black shadow-lg overflow-hidden">
                 {voterNewProfile ? (
                   <img
                     id="voter-image"
                     src={URL.createObjectURL(voterNewProfile)}
                     alt="Profile Image"
                   />
-                ) : (
+                ) : voterData.profile !== null ? (
                   <img
                     id="voter-image"
                     src={voterData.profile}
                     alt="Profile Image"
                   />
+                ) : (
+                  <ImageLoading />
                 )}
               </div>
               <input
