@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import TableRow from "./TableRow";
 import AddVoter from "../../../assets/AddVoter.png";
-import { getDocs, collection, doc, deleteDoc } from "firebase/firestore";
-import { ref, listAll, deleteObject } from "firebase/storage";
-import { db, storage } from "../../../config/firebase.js";
+import { getDocs, collection } from "firebase/firestore";
+import { listAll, deleteObject } from "firebase/storage";
+import { db } from "../../../config/firebase.js";
 import { Link, useSearchParams } from "react-router-dom";
+
 const VoterList = () => {
   const [voterList, setVoterList] = useState([]);
   const [search, setSearch] = useSearchParams({ voterID: "" });
   const searchInput = search.get("voterID");
+  const [loading, setLoading] = useState(false);
   const handleSearchInput = (event) => {
     setSearch({ voterID: event.target.value }, { replace: true });
   };
@@ -50,8 +52,14 @@ const VoterList = () => {
       String(voter.Name).includes(searchInput)
   );
 
+  const handleReload = async () => {
+    setLoading(true);
+    await getAllVoters();
+    setLoading(false);
+  };
+
   useEffect(() => {
-    getAllVoters();
+    handleReload();
   }, []);
 
   return (
@@ -101,44 +109,89 @@ const VoterList = () => {
           <span className="sr-only">Search</span>
         </Link>
       </form>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs text-gray-700  bg-gray-50">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Name
-              </th>
+      {loading ? (
+        <div
+          role="status"
+          className=" p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse "
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="h-2.5 bg-gray-300 rounded-full  w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full "></div>
+            </div>
+            <div className="h-2.5 bg-gray-300 rounded-full  w-12"></div>
+          </div>
+          <div className="flex items-center justify-between pt-4">
+            <div>
+              <div className="h-2.5 bg-gray-300 rounded-full w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full "></div>
+            </div>
+            <div className="h-2.5 bg-gray-300 rounded-full  w-12"></div>
+          </div>
+          <div className="flex items-center justify-between pt-4">
+            <div>
+              <div className="h-2.5 bg-gray-300 rounded-full w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="h-2.5 bg-gray-300 rounded-full w-12"></div>
+          </div>
+          <div className="flex items-center justify-between pt-4">
+            <div>
+              <div className="h-2.5 bg-gray-300 rounded-full w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="h-2.5 bg-gray-300 rounded-full w-12"></div>
+          </div>
+          <div className="flex items-center justify-between pt-4">
+            <div>
+              <div className="h-2.5 bg-gray-300 rounded-full w-24 mb-2.5"></div>
+              <div className="w-32 h-2 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="h-2.5 bg-gray-300 rounded-full w-12"></div>
+          </div>
+          <span className="sr-only">Loading...</span>
+        </div>
+      ) : (
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="text-xs text-gray-700  bg-gray-50">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Name
+                </th>
 
-              <th scope="col" className="px-6 py-3">
-                Aadhar Number
-              </th>
+                <th scope="col" className="px-6 py-3">
+                  Aadhar Number
+                </th>
 
-              <th scope="col" className="px-6 py-3">
-                City
-              </th>
+                <th scope="col" className="px-6 py-3">
+                  City
+                </th>
 
-              <th scope="col" className="px-6 py-3">
-                DOB
-              </th>
+                <th scope="col" className="px-6 py-3">
+                  DOB
+                </th>
 
-              <th scope="col" className="px-6 py-3 w-48">
-                Actions
-              </th>
-            </tr>
-          </thead>
+                <th scope="col" className="px-6 py-3 w-48">
+                  Actions
+                </th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {filteredVoterList.map((voter) => (
-              <TableRow
-                name={voter.Name}
-                aadharNumber={voter.AadharNumber}
-                city={voter.City}
-                dob={voter.DOB}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+            <tbody>
+              {filteredVoterList.map((voter) => (
+                <TableRow
+                  key={voter.AadharNumber}
+                  name={voter.Name}
+                  aadharNumber={voter.AadharNumber}
+                  city={voter.City}
+                  dob={voter.DOB}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
