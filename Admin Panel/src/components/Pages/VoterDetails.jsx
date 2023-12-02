@@ -4,6 +4,7 @@ import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { doc, getDoc } from "firebase/firestore";
 import NoImageFound from "../../assets/NoImageFound.png";
 import { useSearchParams } from "react-router-dom";
+import ImageLoading from "../Dummy/ImageLoading.jsx";
 
 const VoterDetails = () => {
   const [voterData, setVoterData] = useState({
@@ -27,6 +28,7 @@ const VoterDetails = () => {
   const testFingerprintlist = [];
   const [search, setSearch] = useSearchParams({ voterID: "" });
   const voterID = search.get("voterID");
+  const [loading, setLoading] = useState(false);
 
   // Fingerprint elements
   for (let index = 0; index < voterData.fingerprints.length; index++) {
@@ -111,9 +113,11 @@ const VoterDetails = () => {
   }
 
   // Search Button
-  function handleSearch(e) {
+  async function handleSearch(e) {
     e.preventDefault();
-    getVoterDetails(voterID);
+    setLoading(true);
+    await getVoterDetails(voterID);
+    setLoading(false);
   }
 
   const reset = () => {
@@ -188,11 +192,7 @@ const VoterDetails = () => {
             <div className="mx-auto flex flex-col items-center justify-center gap-6 my-6">
               <div className="aspect-square bg-slate-300 rounded-xl h-56  border border-black shadow-lg overflow-hidden">
                 {!voterData.profile ? (
-                  <img
-                    id="voter-image"
-                    src={NoImageFound}
-                    alt="Profile Image"
-                  />
+                  <ImageLoading />
                 ) : (
                   <img
                     id="voter-image"
@@ -438,14 +438,28 @@ const VoterDetails = () => {
               >
                 Fingerprints
               </label>
-              {/* <div className="grid gap-4 mb-4 sm:grid-cols-4 "> */}
-              <div className="grid gap-4 mb-4 grid-cols-[repeat(auto-fill,minmax(100px,1fr))] ">
-                {voterData.fingerprints.map((img) => (
-                  <div className="h-[100px] w-[100px] bg-slate-500 rounded-md object-cover  border border-slate-500 overflow-hidden">
-                    <img className="aspect-square w-full" src={img} alt="" />
-                  </div>
-                ))}
-                {/* {fingerprintList} */}
+              <div className="grid gap-4 mb-4 grid-cols-[repeat(auto-fill,minmax(100px,1fr))]">
+                {loading
+                  ? Array.from({ length: 10 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="h-[100px] w-[100px] bg-slate-500 rounded-md object-cover border border-slate-500 overflow-hidden"
+                      >
+                        <ImageLoading />{" "}
+                      </div>
+                    ))
+                  : voterData.fingerprints.map((img, index) => (
+                      <div
+                        key={index}
+                        className="h-[100px] w-[100px] bg-slate-500 rounded-md object-cover border border-slate-500 overflow-hidden"
+                      >
+                        <img
+                          className="aspect-square w-full"
+                          src={img}
+                          alt=""
+                        />
+                      </div>
+                    ))}
               </div>
             </div>
           </form>
