@@ -1,5 +1,5 @@
 import { useState } from "react";
-import partiesURL from "../../constants/PartiesURL";
+import { partiesURL } from "../../constants/PartiesURL.js";
 
 const Election = () => {
   const [NewCandidate, setNewCandidate] = useState({

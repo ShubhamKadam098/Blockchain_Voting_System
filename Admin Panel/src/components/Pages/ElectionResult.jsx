@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useContract from "../../Context/ContractContext";
-import partiesURL from "../../constants/PartiesURL.js";
+import { partiesURL } from "../../constants/PartiesURL.js";
 
 const ElectionResult = () => {
   const { Candidates, fetchCandidateList, Error } = useContract();
