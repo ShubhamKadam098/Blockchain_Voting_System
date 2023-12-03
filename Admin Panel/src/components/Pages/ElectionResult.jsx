@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import PartiesURL from "../../constants/PartiesURL";
 import useContract from "../../Context/ContractContext";
+import partiesURL from "../../constants/PartiesURL.js";
 
 const ElectionResult = () => {
   const { Candidates, fetchCandidateList, Error } = useContract();
   const [loading, setLoading] = useState(false);
 
+  const getPartyURL = (partyName) => {
+    return partiesURL.partyName;
+  };
+
   const handleReload = async () => {
-    setLoading(true);
+    await setLoading(true);
     await fetchCandidateList();
     setLoading(false);
   };
@@ -115,7 +119,7 @@ const ElectionResult = () => {
               </thead>
 
               <tbody className="">
-                {Candidates.length > 0 ? (
+                {Candidates && Candidates.length > 0 ? (
                   <>
                     {Array.isArray(Candidates) ? (
                       Candidates.map((candidate) => (
@@ -138,7 +142,7 @@ const ElectionResult = () => {
                           <td className="px-6 py-4 flex items-center justify-center text-base font-semibold gap-2">
                             <img
                               className="h-8"
-                              src={PartiesURL[candidate.party]}
+                              src={partiesURL[candidate.party]}
                               alt=""
                               srcSet=""
                             />

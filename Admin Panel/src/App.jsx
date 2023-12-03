@@ -18,6 +18,7 @@ import Layout from "./Layout";
 import Election from "./components/Pages/Election";
 import PrivateRoute from "./components/Login/PrivateRoute";
 import PageNotFound from "./components/Dummy/PageNotFound";
+import { ContractProvider } from "./Context/ContractContext";
 
 function App() {
   const router = createBrowserRouter(
@@ -59,9 +60,9 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <DatabaseProvider>
+        <ContractProvider>
           <RouterProvider router={router} />
-        </DatabaseProvider>
+        </ContractProvider>
       </AuthProvider>
     </>
   );
