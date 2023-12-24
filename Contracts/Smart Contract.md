@@ -39,3 +39,5 @@ _Note: After deploying the contract you will find contract address keep the note
 2. Select Networks.
 3. Click on "Add Network Manually".
 4. Fill following network details and save.
+
+![scrnli_12_25_2023_1-41-46 AM](https://github.com/ShubhamKadam098/Blockchain_Voting_System/assets/119697848/86be99e5-5bb2-4559-a5e7-8f0cf411b3a0)
