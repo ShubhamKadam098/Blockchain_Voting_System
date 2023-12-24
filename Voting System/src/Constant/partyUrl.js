@@ -8,4 +8,4 @@ const partiesURL = {
   NCP: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_Nationalist_Congress_Party.svg/180px-Flag_of_Nationalist_Congress_Party.svg.png",
 };
 
-export default { partiesURL };
+export { partiesURL };

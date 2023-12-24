@@ -1,5 +1,5 @@
 import useUser from "../../Context/UserContext";
-import partiesURL from "../../Constant/partyUrl.js";
+import { partiesURL } from "../../Constant/partyUrl.js";
 const TableRow = ({
   name = "N/A",
   candidateId = "N/A",
