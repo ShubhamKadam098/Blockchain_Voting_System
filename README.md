@@ -2,22 +2,15 @@
 
 This project is a decentralized voting application aimed at ensuring transparent and secure electoral processes by leveraging blockchain technology and Aadhar biometric authentication. This repository contains all the necessary components to set up, deploy, and utilize the system effectively.
 
-## Table of Contents
 
-- [Introduction](#🔍introduction)
-- [How It Works](#how-it-works-🤔)
-- [Technologies Used](#technologies-used-👨‍💻)
-- [Installation Guide](#installation-guide-🚀)
-- [Screenshots ](#screenshots-📷)
-- [Upcoming](#upcoming-🆕)
 
-## 🔍Introduction
+## Introduction
 
 It is critical in modern elections to ensure secure and trustworthy voting systems. Our idea, the Blockchain-Based Voting System, addresses the flaws in traditional voting techniques. Our goal is to create a more secure, transparent, and reliable voting system by utilizing blockchain and Aadhar biometric authentication.
 
 Our mission is to reimagine electoral procedures in order to increase trust, security, and credibility in the voting process.This effort aims at creating raised more trust and credibility in the electoral process, establishing a new standard for fair and safe elections.
 
-## How It Works 🤔
+## How It Works 
 
 **1. Blockchain Infrastructure**
 
@@ -43,7 +36,7 @@ The system provides real-time updates on voting results, allowing users to view 
 
 The combination of blockchain's tamper-proof nature and biometric authentication ensures the integrity of the voting process, minimizing the risks of fraud or manipulation.
 
-## Technologies Used 👨‍💻
+## Technologies Used 
 
 The project's technology stack includes:
 
@@ -57,7 +50,7 @@ The project's technology stack includes:
 
 - **Smart Contracts:** Solidity - Used for developing smart contracts within the Ethereum blockchain, ensuring secure and automated execution of voting processes.
 
-## Installation Guide 🚀
+## Installation Guide 
 
 ### Prerequisites
 
@@ -84,7 +77,7 @@ The project's technology stack includes:
 
 To run each module, follow the instructions provided in their respective documentation.
 
-## Screenshots 📷:
+## Screenshots:
 
 - _Admin Panel_
   
@@ -99,7 +92,7 @@ To run each module, follow the instructions provided in their respective documen
 ![scrnli_12_24_2023_9-40-14 PM](https://github.com/ShubhamKadam098/Blockchain_Voting_System/assets/119697848/55e51e39-33c5-4dd7-ba07-d591ec61929c)
 
 
-## Upcoming 🆕:
+## Upcoming:
 
 We are actively working on ways to run multiple elections simultaneously and tailor candidates for each voter based on their location. Keep an eye out for updates on this exciting feature!
 
